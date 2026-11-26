@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="tile" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#FFB37A"/><stop offset=".45" stop-color="#F8647E"/><stop offset="1" stop-color="#8E2A86"/></linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".4" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="visor" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#55205F"/><stop offset=".55" stop-color="#2E1140"/><stop offset="1" stop-color="#1A0A28"/></linearGradient>
+    <linearGradient id="eye" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDF2"/><stop offset="1" stop-color="#FFD07A"/></linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3FE0B0"/><stop offset="1" stop-color="#C9FFD9"/></linearGradient>
+  </defs>
+  <rect x="32" y="32" width="448" height="448" rx="108" fill="url(#tile)"/>
+  <rect x="35" y="35" width="442" height="442" rx="105" fill="none" stroke="url(#rim)" stroke-width="6"/>
+  <rect x="80" y="132" width="352" height="172" rx="86" fill="url(#visor)"/>
+  <rect x="180" y="172" width="44" height="92" rx="22" fill="url(#eye)"/>
+  <rect x="288" y="172" width="44" height="92" rx="22" fill="url(#eye)"/>
+  <rect x="120" y="356" width="272" height="36" rx="18" fill="#3A0F4A" opacity=".3"/>
+  <rect x="120" y="356" width="168" height="36" rx="18" fill="url(#mint)"/>
+</svg>

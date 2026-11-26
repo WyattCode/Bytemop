@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Bytemop 产品设计稿</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--fg:#1d2127;--muted:#667085;--line:#dfe3e8;--accent:#2563eb;--accent-soft:#e8effd;--ok:#16a34a;--warn:#d97706;--bad:#c62828;--wf:#eef0f3;--wf-line:#c7ccd4}
+@media(prefers-color-scheme:dark){:root{--bg:#14161a;--card:#1c1f25;--fg:#e6e8ec;--muted:#98a1b0;--line:#2c313a;--accent:#6b9bff;--accent-soft:#1f2c47;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171;--wf:#252932;--wf-line:#3a404b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.65 "Segoe UI","Microsoft YaHei",system-ui,sans-serif}
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+nav.side{position:sticky;top:0;height:100vh;overflow:auto;padding:20px 14px;border-right:1px solid var(--line);background:var(--card)}
+nav.side h1{font-size:17px;margin:0 0 4px}
+nav.side small{color:var(--muted)}
+nav.side a{display:block;padding:6px 10px;margin:2px 0;border-radius:6px;color:var(--fg);text-decoration:none;font-size:14px}
+nav.side a:hover{background:var(--accent-soft)}
+main{padding:28px 40px 80px;max-width:1080px}
+section{margin-bottom:56px}
+h2{font-size:22px;margin:0 0 6px;padding-top:6px}
+h2 .no{color:var(--accent);margin-right:8px}
+h3{font-size:16px;margin:26px 0 8px}
+p.lead{color:var(--muted);margin:0 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:14px}
+th,td{padding:8px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{background:var(--accent-soft);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;padding:0 8px;border-radius:99px;font-size:12px;line-height:20px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.p0{background:var(--accent);color:#fff;border-color:var(--accent)}
+.p1{color:var(--warn);border-color:var(--warn)}
+.p2{color:var(--muted)}
+.safe{color:var(--ok);border-color:var(--ok)}.caution{color:var(--warn);border-color:var(--warn)}.adv{color:var(--bad);border-color:var(--bad)}
+code,pre{font-family:Consolas,"Cascadia Mono",monospace;font-size:13px}
+pre{background:var(--wf);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow:auto;margin:8px 0}
+ul{margin:6px 0 6px 20px;padding:0}li{margin:2px 0}
+.no-do li::marker{color:var(--bad)}
+/* flows */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:10px 0}
+.node{background:var(--card);border:1.5px solid var(--accent);border-radius:8px;padding:6px 12px;font-size:13px}
+.node.alt{border-style:dashed;border-color:var(--muted);color:var(--muted)}
+.node.end{background:var(--accent);color:#fff}
+.arrow{color:var(--muted)}
+.branch{font-size:13px;color:var(--muted);margin:-4px 0 10px 4px}
+/* wireframes */
+.wf{border:1.5px solid var(--wf-line);border-radius:10px;background:var(--wf);overflow:hidden;margin:10px 0 6px;font-size:13px}
+.wf .bar{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--card);border-bottom:1px solid var(--wf-line);color:var(--muted);font-size:12px}
+.wf .dot{width:9px;height:9px;border-radius:50%;background:var(--wf-line)}
+.wf .body{display:grid;grid-template-columns:130px 1fr;min-height:300px}
+.wf .nav{background:var(--card);border-right:1px solid var(--wf-line);padding:10px 6px}
+.wf .nav div{padding:5px 8px;border-radius:5px;color:var(--muted)}
+.wf .nav .on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.wf .pane{padding:14px;position:relative}
+.box{background:var(--card);border:1px solid var(--wf-line);border-radius:6px;padding:8px 10px;margin:6px 0}
+.row{display:flex;align-items:center;gap:8px}.row .sp{flex:1}
+.btn{display:inline-block;border:1px solid var(--wf-line);border-radius:5px;padding:2px 10px;background:var(--card)}
+.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.dng{background:var(--bad);color:#fff;border-color:var(--bad)}
+.bar2{height:8px;border-radius:4px;background:var(--wf-line);overflow:hidden}.bar2>i{display:block;height:100%;background:var(--accent)}
+.n{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--bad);color:#fff;font-size:11px;font-style:normal;font-weight:700;margin-right:4px;flex:none}
+.notes{margin:4px 0 0;padding:0;list-style:none;font-size:13px;color:var(--muted)}
+.notes li{margin:3px 0;display:flex;gap:4px}
+.modal{position:absolute;inset:auto 18% 16px 18%;background:var(--card);border:1.5px solid var(--wf-line);border-radius:8px;padding:12px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.muted{color:var(--muted)}
+.big{font-size:26px;font-weight:700}
+.donut{width:70px;height:70px;border-radius:50%;background:conic-gradient(var(--accent) 0 62%,var(--wf-line) 0);display:grid;place-items:center}
+.donut span{width:48px;height:48px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:12px}
+@media(max-width:860px){.layout{grid-template-columns:1fr}nav.side{position:static;height:auto}main{padding:20px 16px}.grid2,.grid3{grid-template-columns:1fr}.wf .body{grid-template-columns:90px 1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="side">
+  <h1>Bytemop</h1><small>产品设计稿 v1.1 · 已定稿（含实现偏离记录）</small>
+  <p></p>
+  <a href="#s0">0 产品概览</a>
+  <a href="#s1">1 名词定义</a>
+  <a href="#s2">2 信息架构</a>
+  <a href="#s3">3 功能清单</a>
+  <a href="#s4">4 核心流程</a>
+  <a href="#s5">5 界面交互稿</a>
+  <a href="#s6">6 状态与异常</a>
+  <a href="#s7">7 规则与数据定义</a>
+  <a href="#s8">8 非功能需求</a>
+  <a href="#s9">9 路线图与推进顺序</a>
+  <a href="#s10">10 已确定的决策</a>
+  <a href="#s11">11 实现偏离与新增决策</a>
+</nav>
+<main>
+
+<section id="s0">
+<h2><span class="no">0</span>产品概览</h2>
+<p class="lead">一款透明、安全、可撤销的 Windows 磁盘清理与系统维护工具（Electron 桌面应用）。</p>
+<div class="grid2">
+<div class="card"><b>定位</b><br>做“清理界的可信赖工具”：每一次删除都能说清楚<i>删什么、为什么安全、怎么撤销</i>。不靠恐吓式提示和捆绑推广赚钱。</div>
+<div class="card"><b>目标用户</b><ul><li>普通用户：C 盘红了，想一键腾空间但怕删错</li><li>进阶用户：想要明细、排除项、计划任务</li><li>技术用户：想看规则、自己写规则</li></ul></div>
+</div>
+<div class="grid3">
+<div class="card"><b>产品原则</b><ul><li>先预览，后删除</li><li>默认可撤销（隔离区）</li><li>最小权限，按需提权</li><li>默认零遥测</li><li>规则公开可审计</li></ul></div>
+<div class="card"><b>成功标准（北极星）</b><ul><li>单次清理释放空间</li><li>清理后“误删投诉”≈0</li><li>首次扫描 &lt; 30 秒（SSD）</li><li>从打开到完成清理 ≤ 3 次点击</li></ul></div>
+<div class="card"><b>明确不做</b><ul class="no-do"><li>注册表“清理”（收益低、风险高）</li><li>内存“加速”、驱动更新</li><li>常驻后台弹窗推广</li><li>云端上传文件清单</li></ul></div>
+</div>
+</section>
+
+<section id="s1">
+<h2><span class="no">1</span>名词定义</h2>
+<p class="lead">全产品统一术语，界面、代码、规则文件都用同一套词。</p>
+<table>
+<tr><th>术语</th><th>定义</th></tr>
+<tr><td>规则 Rule</td><td>描述“在哪里找、哪些算垃圾、什么条件下能删”的一条声明式配置（见第 7 章）。一条规则对应界面上的一个勾选项。</td></tr>
+<tr><td>规则包 Rule Pack</td><td>一组规则的发布单位，如“系统”“浏览器”“开发者缓存”。带版本号与签名，可单独更新。</td></tr>
+<tr><td>分类 Category</td><td>界面上的分组：系统、浏览器、应用、开发者、隐私。</td></tr>
+<tr><td>风险等级 Risk</td><td><span class="tag safe">安全</span> 删了只会重建，无副作用；<span class="tag caution">谨慎</span> 可能丢失登录态/历史，需明确提示；<span class="tag adv">高级</span> 可能影响功能，默认隐藏。</td></tr>
+<tr><td>扫描 Scan</td><td>只读操作：按规则枚举候选文件，计算数量与体积。绝不修改磁盘。</td></tr>
+<tr><td>发现项 Finding</td><td>一次扫描中某条规则命中的结果（文件数、体积、示例路径、阻塞原因）。</td></tr>
+<tr><td>清理 Clean</td><td>对选中发现项执行删除；默认先移入隔离区。</td></tr>
+<tr><td>隔离区 Quarantine</td><td>清理时文件先移到 Bytemop 管理的隔离目录，保留 N 天（默认 7 天，可设置）可一键还原，到期自动永久删除。</td></tr>
+<tr><td>排除项 Exclusion</td><td>用户指定“永不清理”的路径或规则，优先级高于任何规则。</td></tr>
+<tr><td>阻塞 Blocked</td><td>规则因某进程在运行（如浏览器）或权限不足而暂不可清理的状态。</td></tr>
+<tr><td>干跑 Dry-run</td><td>走完整清理流程但不落盘，输出“将会删除什么”，用于计划任务试运行和调试。</td></tr>
+<tr><td>操作记录 History</td><td>每次清理的不可变日志：时间、规则、数量、体积、结果，可追溯与还原。</td></tr>
+<tr><td>计划任务 Schedule</td><td>按周期自动扫描（可选自动清理“安全”级规则）。</td></tr>
+</table>
+</section>
+
+<section id="s2">
+<h2><span class="no">2</span>信息架构</h2>
+<p class="lead">左侧固定导航，7 个一级页面 + 设置（v1.1 起增加“隐私”页）。</p>
+<div class="grid3">
+<div class="card"><b>概览</b><br>磁盘占用、健康提示、一键“智能扫描”、上次清理摘要。</div>
+<div class="card"><b>清理</b><br>分类勾选 → 明细抽屉 → 清理 → 结果。产品核心。</div>
+<div class="card"><b>启动项</b><br>开机自启程序/任务/服务列表，启用/禁用（可恢复）。</div>
+<div class="card"><b>隐私</b><br>浏览器历史、下载记录、Cookie 的清理，带“保持登录的网站”白名单。</div>
+<div class="card"><b>应用</b><br>已安装应用列表、体积，卸载与残留扫描。（“最后使用”Windows 不提供，未做。）</div>
+<div class="card"><b>磁盘分析</b><br>目录树图、大文件、重复文件。</div>
+<div class="card"><b>历史与还原</b><br>操作记录、隔离区、还原/永久删除。</div>
+</div>
+<div class="card"><b>设置</b>：通用（语言/主题/开机自启）· 清理（隔离天数、默认勾选、最小文件年龄）· 排除项 · 计划任务 · 隐私（遥测开关，默认关）· 规则（规则包版本、更新、自定义规则）· 关于。</div>
+</section>
+
+<section id="s3">
+<h2><span class="no">3</span>功能清单</h2>
+<p class="lead">P0 = 首个可发布版本必须有；P1 = 紧随其后；P2 = 后续。</p>
+<table>
+<tr><th>模块</th><th>功能</th><th>优先级</th><th>说明 / 验收要点</th></tr>
+<tr><td rowspan="7"><b>M1 清理</b></td><td>分类扫描</td><td><span class="tag p0">P0</span></td><td>并行扫描，实时进度，可取消；扫描期间绝不写盘</td></tr>
+<tr><td>结果列表与勾选</td><td><span class="tag p0">P0</span></td><td>按分类分组，显示体积/文件数/风险；默认只勾“安全”级</td></tr>
+<tr><td>明细抽屉</td><td><span class="tag p0">P0</span></td><td>查看规则说明、命中路径、可单独取消某个文件或目录</td></tr>
+<tr><td>隔离式清理</td><td><span class="tag p0">P0</span></td><td>默认移入隔离区；可切换为“永久删除”（需二次确认）</td></tr>
+<tr><td>被占用/阻塞处理</td><td><span class="tag p0">P0</span></td><td>提示需关闭的程序；锁定文件跳过并计数，不报错中断</td></tr>
+<tr><td>排除项</td><td><span class="tag p1">P1</span></td><td>路径/通配符/整条规则；在明细里“永不清理此项”一键加入</td></tr>
+<tr><td>回收站与缩略图缓存</td><td><span class="tag p1">P1</span></td><td>调用系统 API，而非直接删文件</td></tr>
+<tr><td rowspan="3"><b>M2 规则引擎</b></td><td>声明式规则 + 规则包</td><td><span class="tag p0">P0</span></td><td>JSON Schema 校验；非法规则拒绝加载并提示</td></tr>
+<tr><td>规则更新（签名校验）</td><td><span class="tag p1">P1</span></td><td>离线可用；更新失败不影响已有规则</td></tr>
+<tr><td>自定义规则编辑器</td><td><span class="tag p2">P2</span></td><td>带路径安全检查与干跑预览</td></tr>
+<tr><td rowspan="3"><b>M3 隐私</b></td><td>浏览器历史/Cookie 清理</td><td><span class="tag p1">P1</span></td><td>谨慎级；支持“保留登录的站点白名单”</td></tr>
+<tr><td>最近使用记录、剪贴板、DNS 缓存</td><td><span class="tag p1">P1</span></td><td>安全/谨慎分级</td></tr>
+<tr><td>密码、自动填充</td><td><span class="tag p2">P2</span></td><td>高级级，默认隐藏，需输入确认词</td></tr>
+<tr><td rowspan="3"><b>M4 启动项</b></td><td>列出自启项（注册表 Run、启动文件夹、计划任务）</td><td><span class="tag p1">P1</span></td><td>显示发布者、签名状态、启动影响</td></tr>
+<tr><td>禁用 / 启用（可恢复）</td><td><span class="tag p1">P1</span></td><td>只做“禁用”，不删除；一键撤回</td></tr>
+<tr><td>延迟启动建议</td><td><span class="tag p2">P2</span></td><td>—</td></tr>
+<tr><td rowspan="2"><b>M5 应用</b></td><td>应用列表、体积、最后使用</td><td><span class="tag p2">P2</span></td><td>—</td></tr>
+<tr><td>卸载 + 残留扫描</td><td><span class="tag p2">P2</span></td><td>调用应用自身卸载程序，再按残留规则扫描</td></tr>
+<tr><td rowspan="3"><b>M6 磁盘分析</b></td><td>目录体积树图</td><td><span class="tag p1">P1</span></td><td>可点击钻取，右键在资源管理器中打开</td></tr>
+<tr><td>大文件 Top N</td><td><span class="tag p1">P1</span></td><td>阈值可调</td></tr>
+<tr><td>重复文件</td><td><span class="tag p2">P2</span></td><td>先按大小，再按哈希；只建议，不自动删</td></tr>
+<tr><td rowspan="3"><b>M7 历史与还原</b></td><td>操作记录</td><td><span class="tag p0">P0</span></td><td>每次清理必有记录，可导出</td></tr>
+<tr><td>隔离区还原</td><td><span class="tag p0">P0</span></td><td>原路径冲突时另存并提示</td></tr>
+<tr><td>到期自动清除</td><td><span class="tag p0">P0</span></td><td>启动时检查，磁盘不足时提示提前清除</td></tr>
+<tr><td rowspan="2"><b>M8 计划与通知</b></td><td>定时扫描、系统托盘</td><td><span class="tag p1">P1</span></td><td>用 Windows 任务计划程序，关闭应用也能运行</td></tr>
+<tr><td>低磁盘空间提醒</td><td><span class="tag p1">P1</span></td><td>只发系统通知，不弹广告</td></tr>
+<tr><td rowspan="3"><b>M9 平台与基础</b></td><td>按需管理员提权（独立助手）</td><td><span class="tag p0">P0</span></td><td>主程序不以管理员运行；需要时才拉起助手，一次一事</td></tr>
+<tr><td>中英文、深浅色、无障碍</td><td><span class="tag p1">P1</span></td><td>键盘全可达，对比度 ≥ 4.5:1</td></tr>
+<tr><td>安装包、代码签名、自动更新</td><td><span class="tag p1">P1</span></td><td>—</td></tr>
+</table>
+</section>
+
+<section id="s4">
+<h2><span class="no">4</span>核心流程</h2>
+
+<h3>F1 一键清理（主流程）</h3>
+<div class="flow"><span class="node">打开应用</span><span class="arrow">→</span><span class="node">概览页</span><span class="arrow">→</span><span class="node">点击“扫描”</span><span class="arrow">→</span><span class="node">扫描中（可取消）</span><span class="arrow">→</span><span class="node">结果列表</span><span class="arrow">→</span><span class="node">勾选/看明细</span><span class="arrow">→</span><span class="node">点击“清理”</span><span class="arrow">→</span><span class="node">确认对话框</span><span class="arrow">→</span><span class="node">清理中</span><span class="arrow">→</span><span class="node end">结果页（释放 X，可撤销）</span></div>
+<div class="branch">分支：无可清理内容 → “很干净”空状态｜有阻塞项 → 标注“请先关闭 Chrome”，该项不可勾选｜取消扫描 → 保留已扫描结果｜部分失败 → 结果页列出失败数与原因</div>
+
+<h3>F2 还原</h3>
+<div class="flow"><span class="node">历史与还原</span><span class="arrow">→</span><span class="node">选择某次清理</span><span class="arrow">→</span><span class="node">查看文件清单</span><span class="arrow">→</span><span class="node">还原全部 / 部分</span><span class="arrow">→</span><span class="node alt">原路径已有同名文件？另存为并提示</span><span class="arrow">→</span><span class="node end">完成</span></div>
+
+<h3>F3 需要管理员权限的规则</h3>
+<div class="flow"><span class="node">扫描发现“Windows 临时文件”需提权</span><span class="arrow">→</span><span class="node">列表显示 🛡 标记</span><span class="arrow">→</span><span class="node">点击清理</span><span class="arrow">→</span><span class="node">UAC 弹窗（仅拉起助手）</span><span class="arrow">→</span><span class="node alt">拒绝 → 该项标记“未授权”，其余照常</span><span class="arrow">→</span><span class="node end">助手完成后立即退出</span></div>
+
+<h3>F4 计划任务</h3>
+<div class="flow"><span class="node">设置 → 计划任务</span><span class="arrow">→</span><span class="node">选频率与规则范围</span><span class="arrow">→</span><span class="node">模式：仅扫描并通知 / 自动清理“安全”项</span><span class="arrow">→</span><span class="node">写入 Windows 任务计划</span><span class="arrow">→</span><span class="node end">到点静默执行，写入历史</span></div>
+
+<h3>F5 首次启动</h3>
+<div class="flow"><span class="node">欢迎页（3 句话讲清“先预览、可撤销、零遥测”）</span><span class="arrow">→</span><span class="node">选语言/主题</span><span class="arrow">→</span><span class="node">是否启用计划任务（默认否）</span><span class="arrow">→</span><span class="node end">进入概览</span></div>
+</section>
+
+<section id="s5">
+<h2><span class="no">5</span>界面交互稿（低保真）</h2>
+<p class="lead">红色编号对应下方交互说明。所有数据均为示意。</p>
+
+<h3>S1 概览</h3>
+<div class="wf" data-active="概览">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;Bytemop</div>
+<div class="body"><div class="nav"></div><div class="pane">
+<div class="grid2">
+<div class="box"><div class="row"><div class="donut"><span>62%</span></div><div><b>C: 盘已用 62%</b><br><span class="muted">剩余 181 GB / 476 GB</span></div></div></div>
+<div class="box"><b><i class="n">2</i>可释放空间</b><div class="big">657 MB</div><span class="muted">上次扫描：今天 09:41</span></div>
+</div>
+<div class="box row"><span class="btn pri"><i class="n" style="background:#fff;color:#c62828">1</i>智能扫描</span><span class="muted">只读，不会删除任何文件</span></div>
+<div class="box"><i class="n">3</i><b>建议</b><br>· 启动项 12 个，其中 4 个影响较大 &nbsp;<span class="btn">查看</span><br>· 隔离区占用 1.2 GB，3 天后到期 &nbsp;<span class="btn">管理</span></div>
+<div class="box"><i class="n">4</i><b>最近一次清理</b>：释放 1.1 GB · 5 天前 &nbsp;<span class="btn">撤销/详情</span></div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>智能扫描 = 扫描所有“安全”级规则，完成后自动跳到清理页。</li>
+<li><i class="n">2</i>“可释放空间”仅在有扫描结果时显示；过期（&gt;24h）灰显并提示重新扫描。</li>
+<li><i class="n">3</i>建议卡最多 3 条，可关闭，不含任何付费推广。</li>
+<li><i class="n">4</i>撤销入口常驻，隔离区过期后变为“已永久删除”。</li>
+</ul>
+
+<h3>S2 清理 · 结果列表</h3>
+<div class="wf" data-active="清理">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;Bytemop · 清理</div>
+<div class="body"><div class="nav"></div><div class="pane">
+<div class="row"><b>扫描完成</b><span class="muted">共 657 MB · 12,778 个文件</span><span class="sp"></span><span class="btn"><i class="n">1</i>重新扫描</span><span class="btn pri"><i class="n" style="background:#fff;color:#c62828">5</i>清理所选 (334 MB)</span></div>
+<div class="muted" style="margin-top:8px"><i class="n">2</i>系统　　<span class="tag safe">安全</span><span class="tag caution">谨慎</span> 筛选</div>
+<div class="box row">☑ 用户临时文件 <span class="tag safe">安全</span><span class="sp"></span><span class="muted">334 MB · 7,566 个</span><span class="btn"><i class="n">3</i>明细 ›</span></div>
+<div class="box row">☑ DirectX 着色器缓存 <span class="tag safe">安全</span><span class="sp"></span><span class="muted">1.7 MB · 42 个</span><span class="btn">明细 ›</span></div>
+<div class="box row">☐ Windows 临时文件 🛡 <span class="tag caution">谨慎</span><span class="sp"></span><span class="muted">需要管理员</span><span class="btn">明细 ›</span></div>
+<div class="muted"><i class="n">2</i>浏览器</div>
+<div class="box row">☐ Microsoft Edge 缓存 <span class="tag safe">安全</span><span class="sp"></span><span style="color:var(--bad)"><i class="n">4</i>请先关闭 Edge</span><span class="muted">323 MB</span></div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>重新扫描会清空当前勾选的“手动修改”，需二次确认。</li>
+<li><i class="n">2</i>分类可折叠；顶部筛选按风险等级过滤，默认只显示“安全+谨慎”。</li>
+<li><i class="n">3</i>明细打开右侧抽屉（S3），不跳页。</li>
+<li><i class="n">4</i>阻塞项不可勾选；关闭对应程序后自动重新检测（轮询 3 秒），无需手动刷新。</li>
+<li><i class="n">5</i>按钮实时显示所选体积；0 项时禁用。</li>
+</ul>
+
+<h3>S3 明细抽屉</h3>
+<div class="wf" data-active="清理">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;Bytemop · 清理 · 明细</div>
+<div class="body"><div class="nav"></div><div class="pane">
+<div class="box"><b>用户临时文件</b> <span class="tag safe">安全</span><br><span class="muted"><i class="n">1</i>这是什么：应用运行时产生的临时中间文件。<br>为什么能删：只清理 24 小时前的文件，应用需要时会重新生成。<br>路径：<code>%TEMP%</code></span></div>
+<div class="box"><i class="n">2</i>☑ 按子目录勾选　排序：体积 ▾　　搜索 ________</div>
+<div class="box">☑ <code>AppData\Local\Temp\npm-cache</code> <span class="muted">120 MB</span><br>☑ <code>AppData\Local\Temp\pip-build</code> <span class="muted">96 MB</span><br>☐ <code>AppData\Local\Temp\installer.tmp</code> <span class="muted">42 MB　<i class="n">3</i>永不清理此项</span></div>
+<div class="row"><span class="muted"><i class="n">4</i>将移入隔离区，7 天内可还原</span><span class="sp"></span><span class="btn">关闭</span></div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>每条规则必须有“这是什么 / 为什么能删”，来自规则文件的 <code>description</code> 字段，缺失则规则不允许发布。</li>
+<li><i class="n">2</i>列表虚拟滚动，单规则可承载 10 万级文件。</li>
+<li><i class="n">3</i>一键加入排除项，立即从本次结果移除。</li>
+<li><i class="n">4</i>底部始终显示本次将采用“隔离”还是“永久删除”。</li>
+</ul>
+
+<h3>S4 确认对话框与结果</h3>
+<div class="wf" data-active="清理" style="min-height:0">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;确认 → 结果</div>
+<div class="body" style="min-height:230px"><div class="nav"></div><div class="pane">
+<div class="grid2">
+<div class="box"><b>清理 2 项，约 336 MB？</b><br><span class="muted">文件将移入隔离区，7 天内可在“历史与还原”中还原。</span><br><i class="n">1</i>▸ 查看将清理的项目<br><br><span class="btn">取消</span> <span class="btn pri">清理</span></div>
+<div class="box"><b>✓ 已释放 331 MB</b><br><span class="muted">删除 7,540 个文件 · 26 个被占用已跳过</span><br><br><i class="n">2</i><span class="btn">撤销本次清理</span> <span class="btn">查看详情</span><br><span class="muted"><i class="n">3</i>隔离区 7 天后自动清除，到时将再释放空间。</span></div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>“永久删除”模式下对话框改为红色，主按钮写“永久删除”，且默认焦点在“取消”。</li>
+<li><i class="n">2</i>撤销在结果页和历史里都能触发；撤销后体积回到磁盘。</li>
+<li><i class="n">3</i>诚实说明：释放空间在隔离到期前并未真正归还，界面分开显示“已移出”与“已归还”。</li>
+</ul>
+
+<h3>S5 启动项</h3>
+<div class="wf" data-active="启动项">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;Bytemop · 启动项</div>
+<div class="body"><div class="nav"></div><div class="pane">
+<div class="row"><b>12 项 · 4 项影响较大</b><span class="sp"></span><span class="muted"><i class="n">1</i>排序：启动影响 ▾　筛选：全部 ▾</span></div>
+<div class="box row">Spotify <span class="muted">Spotify AB · 已签名</span><span class="sp"></span><span class="tag caution">影响大</span><i class="n">2</i>◉ 启用</div>
+<div class="box row">Adobe Updater <span class="muted">Adobe · 已签名</span><span class="sp"></span><span class="tag">影响中</span>◉ 启用</div>
+<div class="box row">unknown.exe <span class="muted">未知发布者 · 未签名</span><span class="sp"></span><span class="tag adv">需关注</span><i class="n">3</i>◉ 启用 <span class="btn">在文件夹中显示</span></div>
+<div class="muted"><i class="n">4</i>已禁用 (2) — 可随时重新启用</div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>“启动影响”取自 Windows 自身的启动影响统计，不自己估算。</li>
+<li><i class="n">2</i>开关即时生效并写入历史；只禁用不删除。</li>
+<li><i class="n">3</i>未签名/未知发布者高亮，但不替用户做决定。</li>
+<li><i class="n">4</i>已禁用项集中放置，防止“关了找不回”。</li>
+</ul>
+
+<h3>S6 历史与还原</h3>
+<div class="wf" data-active="历史与还原">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;Bytemop · 历史与还原</div>
+<div class="body"><div class="nav"></div><div class="pane">
+<div class="row"><b>隔离区：1.2 GB</b><div class="bar2" style="width:140px"><i style="width:40%"></i></div><span class="muted">上限 5 GB</span><span class="sp"></span><span class="btn dng"><i class="n">1</i>立即清空隔离区</span></div>
+<div class="box row">今天 09:50 <b>清理 2 项</b><span class="sp"></span>331 MB · 剩 7 天 <span class="btn pri"><i class="n">2</i>还原</span> <span class="btn">详情</span></div>
+<div class="box row">11-18 20:10 <b>计划任务扫描</b><span class="sp"></span>仅扫描 · 无变更 <span class="btn">详情</span></div>
+<div class="box row">11-16 08:02 <b>禁用启动项 Spotify</b><span class="sp"></span><span class="btn"><i class="n">3</i>撤回</span></div>
+<div class="muted">条目已过期：11-10 清理 1.1 GB — 已永久删除，无法还原</div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>红色破坏性按钮，二次确认并展示将永久释放的体积。</li>
+<li><i class="n">2</i>可整次还原，也可在详情里按文件还原；还原冲突则另存为 “name (restored).ext”。</li>
+<li><i class="n">3</i>非文件类操作（禁用启动项等）也有撤回。</li>
+</ul>
+
+<h3>S7 设置</h3>
+<div class="wf" data-active="设置">
+<div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i>&nbsp;Bytemop · 设置</div>
+<div class="body"><div class="nav"></div><div class="pane">
+<div class="grid2">
+<div class="box"><b>清理</b><br>删除方式　◉ 移入隔离区　○ 永久删除<br>隔离保留　[ 7 ] 天　上限 [ 5 ] GB<br>临时文件最小年龄　[ 24 ] 小时</div>
+<div class="box"><b>计划任务</b><br>☑ 每周日 20:00<br>模式　◉ 仅扫描并通知　○ 自动清理“安全”项<br>☐ 仅在接通电源时运行</div>
+<div class="box"><b>隐私</b><br><i class="n">1</i>☐ 发送匿名使用统计（默认关）<br>☐ 发送崩溃报告（默认关，发送前可预览内容）</div>
+<div class="box"><b>规则</b><br>规则包 v1.0.3 · 已验证签名<br><i class="n">2</i>☑ 自动检查更新　<span class="btn">立即检查</span><br><span class="btn">查看全部规则</span> <span class="btn">导入自定义规则</span></div>
+</div>
+</div></div></div>
+<ul class="notes">
+<li><i class="n">1</i>所有数据上报默认关闭，开启时展示“将发送的字段样例”。</li>
+<li><i class="n">2</i>规则更新只拉取签名过的规则包；验签失败直接丢弃并保留旧版。</li>
+</ul>
+</section>
+
+<section id="s6">
+<h2><span class="no">6</span>状态与异常</h2>
+<p class="lead">每个界面都要定义这些状态，开发和测试按表逐条验收。</p>
+<table>
+<tr><th>场景</th><th>用户看到什么</th><th>系统行为</th></tr>
+<tr><td>首次/无扫描结果</td><td>空状态：“还没有扫描过。点击‘智能扫描’开始。”</td><td>不自动扫描</td></tr>
+<tr><td>扫描中</td><td>总进度 + 当前分类名 + 取消</td><td>取消后保留已完成部分</td></tr>
+<tr><td>什么都没找到</td><td>“很干净 ✓”及上次清理时间</td><td>—</td></tr>
+<tr><td>目标程序在运行</td><td>该项灰显：“请先关闭 Edge”</td><td>3 秒轮询，关闭后自动可用</td></tr>
+<tr><td>需要管理员</td><td>🛡 标记；点清理才弹 UAC</td><td>拒绝则仅该项失败</td></tr>
+<tr><td>文件被占用/无权限</td><td>结果页“已跳过 26 个”可展开原因</td><td>不中断，记入历史</td></tr>
+<tr><td>清理中途应用崩溃/断电</td><td>下次启动提示“上次清理未完成，是否继续/还原”</td><td>隔离区采用事务日志，可恢复</td></tr>
+<tr><td>磁盘几乎满，无法再隔离</td><td>提示“空间不足，是否改为永久删除或先清空旧隔离区”</td><td>不静默降级</td></tr>
+<tr><td>规则文件损坏/验签失败</td><td>设置里红色提示，使用上一个有效版本</td><td>写日志</td></tr>
+<tr><td>路径过长/无效字符/网络盘</td><td>跳过并计数</td><td>默认不处理网络盘</td></tr>
+<tr><td>多实例</td><td>聚焦已有窗口</td><td>单实例锁</td></tr>
+</table>
+</section>
+
+<section id="s7">
+<h2><span class="no">7</span>规则与数据定义</h2>
+<p class="lead">规则是产品的“可信资产”。字段先定下来，后面所有模块共用。</p>
+<h3>规则 Schema（草案 v1）</h3>
+<pre>{
+  "id": "chrome.cache",                 // 全局唯一，小写+点
+  "name": { "zh-CN": "Chrome 缓存", "en": "Chrome cache" },
+  "description": { "zh-CN": "网页资源缓存，删除后会按需重新下载。" },
+  "category": "browser",                // system | browser | app | dev | privacy
+  "risk": "safe",                       // safe | caution | advanced
+  "defaultSelected": true,
+  "requiresAdmin": false,
+  "blockedByProcesses": ["chrome.exe"],
+  "minAgeHours": 0,
+  "targets": [
+    { "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Cache",
+      "recurse": true, "include": ["*"], "exclude": [] }
+  ],
+  "action": "files",                    // files | recycle-bin | dns-cache | ...
+  "since": "1.0.0"
+}</pre>
+<h3>关键约束</h3>
+<ul>
+<li><b>路径安全</b>：目标必须落在白名单根（%LOCALAPPDATA%、%TEMP% 等）之内且深度 ≥ 2；不跟随符号链接/junction。</li>
+<li><b>描述必填</b>：没有“这是什么/为什么能删”的规则无法通过校验。</li>
+<li><b>风险等级决定默认行为</b>：safe 默认勾选；caution 默认不勾并显示提示；advanced 默认隐藏。</li>
+<li><b>排除项优先于规则</b>；禁用的规则不扫描。</li>
+</ul>
+<h3>本地数据</h3>
+<table>
+<tr><th>数据</th><th>位置（%LOCALAPPDATA%\Bytemop，本机不漫游）</th><th>说明</th></tr>
+<tr><td>用户设置</td><td>settings.json</td><td>清理方式、保留天数、语言、外观、是否看过首次引导、计划任务；损坏时留 .bak</td></tr>
+<tr><td>排除项 / 保持登录站点 / 卸载记录</td><td>exclusions.json · privacy.json · apps.json</td><td>各自独立；排除项和保持登录名单读不出来时一律停止操作（失败即关闭）</td></tr>
+<tr><td>操作记录</td><td>history.jsonl</td><td>只追加，超过 2 MB 自动截短；导出功能尚未做</td></tr>
+<tr><td>隔离区</td><td>quarantine\&lt;runId&gt;\ 内含 meta.json + journal.jsonl + files\</td><td>先写意图日志再移动，崩溃后可对账；还原绝不覆盖已有文件</td></tr>
+<tr><td>规则包</td><td>rules\*.json（内置副本在安装目录）</td><td>签名文件 .sig</td></tr>
+<tr><td>日志</td><td>logs\*.log</td><td>滚动 7 天，不含个人文件内容</td></tr>
+</table>
+</section>
+
+<section id="s8">
+<h2><span class="no">8</span>非功能需求</h2>
+<div class="grid2">
+<div class="card"><b>安全</b><ul><li>渲染进程无 Node 权限，仅通过受限 IPC 接口</li><li>IPC 只传规则 id，不传路径</li><li>提权助手一次只做一件事，完成即退出</li><li>安装包与规则包均签名</li></ul></div>
+<div class="card"><b>隐私</b><ul><li>默认零遥测、零账号</li><li>文件清单只保存在本机</li><li>崩溃报告发送前可预览</li></ul></div>
+<div class="card"><b>性能</b><ul><li>首次扫描 &lt; 30 秒（SSD，常见规则集）</li><li>扫描 CPU 低优先级，界面保持 60fps</li><li>空闲内存 &lt; 200 MB</li></ul></div>
+<div class="card"><b>体验与无障碍</b><ul><li>键盘全程可操作，焦点可见</li><li>屏幕阅读器标注风险等级与状态</li><li>中英文，布局不依赖文字长度</li><li>深浅色，跟随系统</li></ul></div>
+</div>
+<div class="card"><b>质量门槛</b>：核心清理逻辑 100% 单元测试覆盖关键路径（路径安全、占用、符号链接、年龄过滤、还原冲突）；每个规则包发布前在干净 Windows 10/11 虚拟机上跑“扫描 → 清理 → 还原”回归。</div>
+</section>
+
+<section id="s9">
+<h2><span class="no">9</span>路线图与推进顺序</h2>
+<p class="lead">每个版本一个主题，每个模块按“定义 → 交互 → 实现 → 测试 → 验收”走完再进下一个。</p>
+<table>
+<tr><th>版本</th><th>主题</th><th>包含模块</th><th>验收标准</th></tr>
+<tr><td><b>v0.2</b></td><td>安全清理闭环</td><td>M2 规则引擎（Schema + 校验）→ M7 隔离区与历史 → M1 清理（明细、阻塞、隔离式清理）</td><td>能扫描、勾选、清理、撤销；全部异常状态按第 6 章通过</td></tr>
+<tr><td><b>v0.3</b></td><td>体验打磨 + 管理员</td><td>M9 提权助手、排除项、概览页、设置页、中英文</td><td>Windows 临时文件可在授权后清理；首次启动流程完整</td></tr>
+<tr><td><b>v0.4</b></td><td>隐私与启动项</td><td>M3 隐私、M4 启动项、M8 计划任务与通知</td><td>计划任务静默运行并写历史</td></tr>
+<tr><td><b>v0.5</b></td><td>分析</td><td>M6 磁盘分析、大文件</td><td>100 万文件目录下可流畅钻取</td></tr>
+<tr><td><b>v1.0</b></td><td>发布</td><td>安装包、代码签名、自动更新、规则包更新</td><td>干净系统安装/卸载/升级回归通过</td></tr>
+<tr><td>v1.x</td><td>扩展</td><td>M5 应用卸载、重复文件、自定义规则编辑器</td><td>—</td></tr>
+</table>
+<div class="card"><b>建议我们第一个动手的模块：M2 规则引擎 + M7 隔离区。</b><br>它们是后面所有功能的地基：规则决定“删什么”，隔离区决定“删错了怎么办”。当前的 Bytemop 原型只有直接删除，还没有这两块，需要先补上。</div>
+</section>
+
+<section id="s10">
+<h2><span class="no">10</span>已确定的决策</h2>
+<p class="lead">以下 7 项已按建议定稿，后续设计与开发以此为准；如需变更须同步修改本稿。</p>
+<table>
+<tr><th>#</th><th>议题</th><th>决策</th></tr>
+<tr><td>1</td><td>默认删除方式</td><td><b>默认移入隔离区</b>（可撤销），设置里可切换为永久删除（需二次确认）</td></tr>
+<tr><td>2</td><td>注册表清理</td><td><b>不做</b>，并在产品内解释原因</td></tr>
+<tr><td>3</td><td>目标人群</td><td><b>普通用户为主</b>，进阶细节折叠可见</td></tr>
+<tr><td>4</td><td>商业模式</td><td><b>先免费</b>，规则包保持开放可审计</td></tr>
+<tr><td>5</td><td>语言</td><td>规则与界面文案从第一天起采用 <b>zh-CN / en 双语字段</b>；完整界面双语切换在 v0.3 交付</td></tr>
+<tr><td>6</td><td>计划任务</td><td><b>需要</b>，应用关闭后仍可运行，使用 Windows 任务计划程序</td></tr>
+<tr><td>7</td><td>产品名</td><td><b>Bytemop</b></td></tr>
+</table>
+</section>
+
+
+<section id="s11">
+<h2><span class="no">11</span>实现偏离与新增决策</h2>
+<p class="lead">第 0–10 章是开发前的设计；下面记录实际做出来之后与设计不同的地方，以及开发中新定的决策。以本章为准。</p>
+
+<h3>与原设计的偏离</h3>
+<table>
+<tr><th>原设计</th><th>实际</th><th>原因</th></tr>
+<tr><td>历史用 history.sqlite</td><td>history.jsonl，只追加</td><td>不引入原生依赖；日志只用于展示，写失败不影响已完成的操作</td></tr>
+<tr><td>隔离区 manifest.json</td><td>meta.json（原子写）+ journal.jsonl（意图日志）</td><td>崩溃恢复：日志先于移动，且只有隔离区里真有文件的行才算数</td></tr>
+<tr><td>明细抽屉按子目录勾选、虚拟滚动</td><td>按规则整体勾选；抽屉列出体积最大的 12 项，每项可“永不清理”</td><td>排除项已覆盖“留下某些文件”的需求；10 万级文件的列表待做</td></tr>
+<tr><td>启动项含计划任务/服务、启动影响、历史里可撤回</td><td>只有注册表 Run 与启动文件夹；无影响评级；撤回只能在启动项页重新打开开关</td><td>Windows 不公开启动影响数据，不自己估算</td></tr>
+<tr><td>隐私：历史/Cookie，最近使用、剪贴板、DNS</td><td>只做 Edge / Chrome / Brave 的历史、下载记录、Cookie；不支持 Firefox；清理不可还原，必须先关闭浏览器</td><td>直接改浏览器的 SQLite 数据；不可还原所以每次确认，读不出保持登录名单则取消清理</td></tr>
+<tr><td>磁盘分析：方块树图，重复文件只建议</td><td>可钻取的条形列表 + 大文件 + 重复文件（大小 → 前 64 KB 哈希 → SHA-256）；删除走回收站，只能删最近一次分析列出的文件，每组重复至少保留一份</td><td>回收站由 Windows 管理，比自建隔离区更直接；对没有回收站的盘或过大的文件会拒绝，避免被静默永久删除</td></tr>
+<tr><td>应用：列表、体积、最后使用、卸载 + 残留</td><td>列表、估算体积、卸载、残留；没有“最后使用”</td><td>Windows 不提供可靠的最后使用时间</td></tr>
+<tr><td>系统托盘</td><td>未做；计划任务只发系统通知</td><td>先保证后台任务可靠；托盘留到发布阶段</td></tr>
+<tr><td>规则更新、签名、自定义规则编辑器、规则查看页</td><td>规则只随程序内置，无更新和签名</td><td>属于 v1.0 发布工作</td></tr>
+<tr><td>设置里“开机自启”、清理“默认勾选”、最小文件年龄</td><td>未做（最小文件年龄在规则里写死）</td><td>暂无需求验证</td></tr>
+<tr><td>隔离区超限时可选“改为永久删除”</td><td>超限就停止并说明，让用户先清理或调大上限</td><td>不静默降级；改成可选项留待以后</td></tr>
+<tr><td>版本路线 v0.2 → v1.0</td><td>实际按模块推进：M2、M7、M9、排除项、M4、M8、M3、M6、M5、首次引导</td><td>按用户逐个点名的顺序</td></tr>
+</table>
+
+<h3>新增的决策</h3>
+<table>
+<tr><th>#</th><th>议题</th><th>决策</th></tr>
+<tr><td>8</td><td>管理员权限</td><td>主程序永不以管理员运行。需要时才拉起一个短命的提权助手，经私有命名管道通信，带一次性令牌。任务只传规则编号、运行编号或应用名与残留编号，<b>从不传路径</b>；助手自己重新校验一切。</td></tr>
+<tr><td>9</td><td>删除失败即关闭</td><td>读不出进程列表 → 当作浏览器在运行；读不出排除项 / 保持登录名单 → 停止操作；排除项永远优先于任何规则。</td></tr>
+<tr><td>10</td><td>卸载应用</td><td>只启动程序自带的卸载向导，自己不删程序文件；商店应用通过 Windows 为当前用户移除。残留只按“文件夹名与应用名对得上”查找，通用名称、其他已安装应用的名称一律不认领，不碰注册表。</td></tr>
+<tr><td>11</td><td>残留去向</td><td>用户目录下的残留进隔离区（可还原，遵循“清理方式”设置）。Program Files / ProgramData 里的残留需要管理员权限：交给助手，由助手自己找出并核对，拒绝 Windows 与 Microsoft 的文件夹、TrustedInstaller 所有的文件夹，然后移到回收站。设置和用户数据、共用位置默认不勾选。</td></tr>
+<tr><td>12</td><td>首次启动与外观</td><td>三步欢迎页（语言与外观 → 安全原则 → 可选的每周扫描，默认关），可跳过，可在设置里重看。外观可选跟随系统 / 浅色 / 深色。</td></tr>
+<tr><td>13</td><td>计划任务</td><td>只做“扫描并通知”或自动清理“安全”级规则；先改 Windows 任务，成功后才保存设置，两者不会不一致。</td></tr>
+<tr><td>14</td><td>发布方式</td><td><b>不购买代码签名证书</b>：发布未签名的版本，附 SHA-256 校验值；不做自动更新，只提示新版本。后果见发布清单 B 部分。</td></tr>
+</table>
+
+<h3>已知缺口</h3>
+<ul>
+<li>提权助手产生的隔离记录与文件放在用户可写的文件夹里：已逐行校验日志并拒绝联接点，但没有根治。根治办法是安装版把它们放进 <code>%ProgramData%</code> 下仅管理员可写的文件夹，并对每个文件记录哈希。这也是助手“还原到 Program Files”目前没有开放的原因（所以机器级残留走回收站）。</li>
+<li>提权助手只在与调用方同一账号下运行；用另一个管理员的凭据确认 UAC 时会被拒绝并说明原因。</li>
+<li>改为永久删除、缩短隔离保留天数由主进程确认；OneDrive 目录里的文件不参与查重复（Node 读不到“仅在线”属性，所以整个目录跳过）。</li>
+<li>真实环境未验证：真实窗口的点击流程、Chrome / Brave、任务计划程序到点触发与通知、真实的卸载向导与 UAC、屏幕阅读器。</li>
+</ul>
+</section>
+
+</main>
+</div>
+<script>
+// Inject the shared sidebar into every wireframe.
+const items=['概览','清理','启动项','隐私','应用','磁盘分析','历史与还原','设置'];
+document.querySelectorAll('.wf').forEach(w=>{
+  const active=w.dataset.active;
+  w.querySelector('.nav').innerHTML=items.map(i=>`<div class="${i===active?'on':''}">${i}</div>`).join('');
+});
+</script>
+</body>
+</html>

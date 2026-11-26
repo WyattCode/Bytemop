@@ -1,0 +1,11 @@
+node_modules/
+dist/
+
+# rejected design explorations (large comparison pages with embedded screenshots)
+docs/design-options/
+docs/design-options-b/
+docs/design-options-d/
+
+.claude/
+*.log
+Thumbs.db

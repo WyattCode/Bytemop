@@ -1,0 +1,127 @@
+{
+  "pack": "system",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "user-temp",
+      "name": {
+        "zh-CN": "用户临时文件",
+        "en": "User temp files"
+      },
+      "description": {
+        "zh-CN": "应用运行时产生的临时中间文件。只清理 24 小时前的文件，应用需要时会重新生成。",
+        "en": "Temporary intermediate files created by apps. Only files older than 24 hours are removed; apps recreate them when needed."
+      },
+      "category": "system",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "minAgeHours": 24,
+      "action": "files",
+      "targets": [
+        {
+          "path": "%TEMP%",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "win-temp",
+      "name": {
+        "zh-CN": "Windows 临时文件（可能需要管理员）",
+        "en": "Windows temp files (may need admin)"
+      },
+      "description": {
+        "zh-CN": "Windows 与安装程序留下的临时文件。只清理 24 小时前的文件。",
+        "en": "Temporary files left by Windows and installers. Only files older than 24 hours are removed."
+      },
+      "category": "system",
+      "risk": "caution",
+      "defaultSelected": false,
+      "requiresAdmin": true,
+      "minAgeHours": 24,
+      "action": "files",
+      "targets": [
+        {
+          "path": "%SystemRoot%\\Temp",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "crash-dumps",
+      "name": {
+        "zh-CN": "崩溃转储",
+        "en": "Crash dumps"
+      },
+      "description": {
+        "zh-CN": "程序崩溃时生成的诊断转储文件，仅用于排查问题，删除不影响程序运行。",
+        "en": "Diagnostic dumps written when programs crash. Only useful for troubleshooting; removing them does not affect programs."
+      },
+      "category": "system",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\CrashDumps",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "wer-reports",
+      "name": {
+        "zh-CN": "Windows 错误报告",
+        "en": "Windows error reports"
+      },
+      "description": {
+        "zh-CN": "Windows 错误报告的存档与队列，删除后不影响系统。",
+        "en": "Archived and queued Windows error reports. Safe to remove."
+      },
+      "category": "system",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WER\\ReportArchive",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WER\\ReportQueue",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "d3d-shader-cache",
+      "name": {
+        "zh-CN": "DirectX 着色器缓存",
+        "en": "DirectX shader cache"
+      },
+      "description": {
+        "zh-CN": "显卡着色器编译缓存，删除后游戏/应用首次运行会稍慢，之后自动重建。",
+        "en": "GPU shader compile cache. The first launch of games/apps may be slightly slower, then it is rebuilt."
+      },
+      "category": "system",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\D3DSCache",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "pack": "browsers",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "chrome-cache",
+      "name": {
+        "zh-CN": "Google Chrome 缓存",
+        "en": "Google Chrome cache"
+      },
+      "description": {
+        "zh-CN": "网页资源缓存，删除后会按需重新下载，不会清除登录状态与书签。",
+        "en": "Cached web resources, re-downloaded on demand. Logins and bookmarks are not affected."
+      },
+      "category": "browser",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "blockedByProcesses": [
+        "chrome.exe"
+      ],
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Cache",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Code Cache",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\GPUCache",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "edge-cache",
+      "name": {
+        "zh-CN": "Microsoft Edge 缓存",
+        "en": "Microsoft Edge cache"
+      },
+      "description": {
+        "zh-CN": "网页资源缓存，删除后会按需重新下载，不会清除登录状态与书签。",
+        "en": "Cached web resources, re-downloaded on demand. Logins and bookmarks are not affected."
+      },
+      "category": "browser",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "blockedByProcesses": [
+        "msedge.exe"
+      ],
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Cache",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Code Cache",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\GPUCache",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "brave-cache",
+      "name": {
+        "zh-CN": "Brave 缓存",
+        "en": "Brave cache"
+      },
+      "description": {
+        "zh-CN": "网页资源缓存，删除后会按需重新下载，不会清除登录状态与书签。",
+        "en": "Cached web resources, re-downloaded on demand. Logins and bookmarks are not affected."
+      },
+      "category": "browser",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "blockedByProcesses": [
+        "brave.exe"
+      ],
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\Cache",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\Code Cache",
+          "recurse": true
+        },
+        {
+          "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\GPUCache",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    },
+    {
+      "id": "firefox-cache",
+      "name": {
+        "zh-CN": "Mozilla Firefox 缓存",
+        "en": "Mozilla Firefox cache"
+      },
+      "description": {
+        "zh-CN": "网页资源缓存，删除后会按需重新下载，不会清除登录状态与书签。",
+        "en": "Cached web resources, re-downloaded on demand. Logins and bookmarks are not affected."
+      },
+      "category": "browser",
+      "risk": "safe",
+      "defaultSelected": true,
+      "requiresAdmin": false,
+      "blockedByProcesses": [
+        "firefox.exe"
+      ],
+      "action": "files",
+      "targets": [
+        {
+          "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\cache2",
+          "recurse": true
+        }
+      ],
+      "since": "1.0.0"
+    }
+  ]
+}

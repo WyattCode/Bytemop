@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bytemop</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="e3.css" />
+</head>
+<body>
+<!-- E3 artwork library: shared paints, filters and the object family (one object per section). -->
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+
+    <linearGradient id="g-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".45" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="g-rim-soft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="g-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+
+    <!-- drive -->
+    <linearGradient id="g-drive" x1=".1" y1="0" x2=".85" y2="1"><stop offset="0" stop-color="#FFF9EF"/><stop offset=".42" stop-color="#FFE6C8"/><stop offset="1" stop-color="#FFB68C"/></linearGradient>
+    <linearGradient id="g-drive-side" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F59A6A"/><stop offset=".55" stop-color="#E0607A"/><stop offset="1" stop-color="#A93377"/></linearGradient>
+    <radialGradient id="g-drive-shade" cx=".82" cy="1.02" r=".95"><stop offset="0" stop-color="#E2506E" stop-opacity=".46"/><stop offset=".55" stop-color="#F0707A" stop-opacity=".12"/><stop offset="1" stop-color="#F0707A" stop-opacity="0"/></radialGradient>
+    <linearGradient id="g-visor" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#55205F"/><stop offset=".55" stop-color="#2E1140"/><stop offset="1" stop-color="#1A0A28"/></linearGradient>
+    <linearGradient id="g-visor-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#190820" stop-opacity=".9"/><stop offset=".5" stop-color="#F7B6D8" stop-opacity=".12"/><stop offset="1" stop-color="#FFD9C2" stop-opacity=".7"/></linearGradient>
+    <linearGradient id="g-eye" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDF2"/><stop offset="1" stop-color="#FFD07A"/></linearGradient>
+    <radialGradient id="g-eyeglow"><stop offset="0" stop-color="#FFC25C" stop-opacity=".6"/><stop offset="1" stop-color="#FF8A5C" stop-opacity="0"/></radialGradient>
+    <linearGradient id="g-mint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3FE0B0"/><stop offset="1" stop-color="#C9FFD9"/></linearGradient>
+    <radialGradient id="g-led"><stop offset="0" stop-color="#F2FFF6"/><stop offset=".5" stop-color="#5BEFC0"/><stop offset="1" stop-color="#16B890"/></radialGradient>
+
+    <!-- mop -->
+    <linearGradient id="g-handle" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE9A6"/><stop offset=".45" stop-color="#FFC255"/><stop offset="1" stop-color="#E8813A"/></linearGradient>
+    <linearGradient id="g-teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9FF7E2"/><stop offset=".5" stop-color="#2CC7B2"/><stop offset="1" stop-color="#0E8284"/></linearGradient>
+    <linearGradient id="g-coral" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#FFB3AE"/><stop offset=".5" stop-color="#FF6F88"/><stop offset="1" stop-color="#DB3F78"/></linearGradient>
+    <linearGradient id="g-coral-d" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#F0688A"/><stop offset="1" stop-color="#A92A6C"/></linearGradient>
+
+    <!-- keep box -->
+    <linearGradient id="g-box" x1="0" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#FFE3A3"/><stop offset=".5" stop-color="#FFB95A"/><stop offset="1" stop-color="#EE8640"/></linearGradient>
+    <radialGradient id="g-box-shade" cx=".9" cy="1" r=".9"><stop offset="0" stop-color="#C2413F" stop-opacity=".5"/><stop offset="1" stop-color="#C2413F" stop-opacity="0"/></radialGradient>
+    <linearGradient id="g-lid" x1="0" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#FFF3CC"/><stop offset=".6" stop-color="#FFD27A"/><stop offset="1" stop-color="#F7A552"/></linearGradient>
+    <linearGradient id="g-box-in" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5A1E2A"/><stop offset="1" stop-color="#92402A"/></linearGradient>
+
+    <!-- crumbs -->
+    <linearGradient id="g-lilac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7D6FF"/><stop offset="1" stop-color="#9B6DF2"/></linearGradient>
+    <linearGradient id="g-sun" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF6BF"/><stop offset="1" stop-color="#FFB93D"/></linearGradient>
+    <linearGradient id="g-mintcube" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D6FFEF"/><stop offset="1" stop-color="#35CFA6"/></linearGradient>
+    <linearGradient id="g-paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#FFE3D2"/></linearGradient>
+
+    <!-- section objects -->
+    <linearGradient id="g-emerald" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B9FFDD"/><stop offset=".45" stop-color="#34CF9A"/><stop offset="1" stop-color="#0B7868"/></linearGradient>
+    <linearGradient id="g-emerald-rim" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#EFFFF7"/><stop offset="1" stop-color="#7BE8BE"/></linearGradient>
+    <radialGradient id="g-bubble" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#DDF9FF" stop-opacity=".9"/><stop offset="1" stop-color="#9CE4F2" stop-opacity=".75"/></radialGradient>
+    <linearGradient id="g-blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B5D8FF"/><stop offset=".5" stop-color="#4E8EF7"/><stop offset="1" stop-color="#2748BC"/></linearGradient>
+    <linearGradient id="g-blue-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3D74E8"/><stop offset="1" stop-color="#1B2F96"/></linearGradient>
+    <linearGradient id="g-peach" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE2C4"/><stop offset="1" stop-color="#FF9C6E"/></linearGradient>
+    <linearGradient id="g-peach-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF9566"/><stop offset="1" stop-color="#D2476A"/></linearGradient>
+    <linearGradient id="g-cream-side" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFD9B0"/><stop offset="1" stop-color="#E6957A"/></linearGradient>
+    <linearGradient id="g-violet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D8C3FF"/><stop offset=".5" stop-color="#8C5BF5"/><stop offset="1" stop-color="#4B24B8"/></linearGradient>
+    <linearGradient id="g-pink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFC6DD"/><stop offset=".5" stop-color="#FF6FA8"/><stop offset="1" stop-color="#C92F7A"/></linearGradient>
+    <linearGradient id="g-rose" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#FFC2CF"/><stop offset=".45" stop-color="#F8588A"/><stop offset="1" stop-color="#A81A5E"/></linearGradient>
+    <linearGradient id="g-rose-side" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C92A6A"/><stop offset="1" stop-color="#6E0F45"/></linearGradient>
+    <linearGradient id="g-orange" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFC978"/><stop offset=".5" stop-color="#FF8A3C"/><stop offset="1" stop-color="#DC4A22"/></linearGradient>
+    <linearGradient id="g-flame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".5" stop-color="#FFC043"/><stop offset="1" stop-color="#FF6A3C" stop-opacity=".2"/></linearGradient>
+    <linearGradient id="g-slate" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1ECFA"/><stop offset=".5" stop-color="#B4ABD2"/><stop offset="1" stop-color="#6B6292"/></linearGradient>
+    <linearGradient id="g-slate-side" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7A70A6"/><stop offset="1" stop-color="#3F3766"/></linearGradient>
+    <radialGradient id="g-sky" cx=".35" cy=".28" r=".85"><stop offset="0" stop-color="#E4F6FF"/><stop offset=".5" stop-color="#5DB4F7"/><stop offset="1" stop-color="#2A56C4"/></radialGradient>
+    <radialGradient id="g-spec"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".5" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g-pool"><stop offset="0" stop-color="#FF9A6A" stop-opacity=".34"/><stop offset="1" stop-color="#FF9A6A" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g-ground"><stop offset="0" stop-color="#12021C" stop-opacity=".78"/><stop offset=".55" stop-color="#12021C" stop-opacity=".3"/><stop offset="1" stop-color="#12021C" stop-opacity="0"/></radialGradient>
+
+    <clipPath id="c-visor"><rect x="152" y="146" width="216" height="92" rx="46"/></clipPath>
+    <clipPath id="c-belt"><rect x="176" y="268" width="140" height="16" rx="8"/></clipPath>
+    <clipPath id="c-shield"><path d="M100 20C124 37 150 43 172 43C172 110 151 155 100 181C49 155 28 110 28 43C50 43 76 37 100 20Z"/></clipPath>
+
+    <!-- Home: the drive -->
+    <symbol id="o-drive" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="180" rx="70" ry="10" fill="url(#g-ground)"/>
+      <rect x="20" y="52" width="160" height="120" rx="38" fill="url(#g-drive-side)"/>
+      <rect x="20" y="40" width="160" height="120" rx="38" fill="url(#g-drive)"/>
+      <rect x="20" y="40" width="160" height="120" rx="38" fill="url(#g-drive-shade)"/>
+      <rect x="21.5" y="41.5" width="157" height="117" rx="36.5" fill="none" stroke="url(#g-rim)" stroke-width="3"/>
+      <rect x="42" y="60" width="116" height="52" rx="26" fill="url(#g-visor)"/>
+      <rect x="43" y="61" width="114" height="50" rx="25" fill="none" stroke="url(#g-visor-rim)" stroke-width="1.6"/>
+      <rect x="77" y="74" width="11" height="22" rx="5.5" fill="url(#g-eye)"/><rect x="112" y="74" width="11" height="22" rx="5.5" fill="url(#g-eye)"/>
+      <rect x="56" y="126" width="70" height="10" rx="5" fill="#B8553F" opacity=".28"/>
+      <rect x="56" y="126" width="44" height="10" rx="5" fill="url(#g-mint)"/>
+      <circle cx="142" cy="131" r="5" fill="url(#g-led)"/>
+    </symbol>
+
+    <!-- Smart Scan in the sidebar: the mop (the drive itself is the app's logo, so it is not repeated there) -->
+    <symbol id="o-mop" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="184" rx="62" ry="9" fill="url(#g-ground)"/>
+      <g transform="rotate(16 100 110)">
+        <rect x="93" y="8" width="14" height="112" rx="7" fill="#E9A45C"/>
+        <rect x="95" y="10" width="5" height="106" rx="2.5" fill="#FFE0AE" opacity=".85"/>
+        <path d="M52 134Q52 118 68 118H132Q148 118 148 134V166a12 12 0 0 1-24 0a12 12 0 0 1-24 0a12 12 0 0 1-24 0a12 12 0 0 1-24 0Z" fill="#C93A62"/>
+        <path d="M52 128Q52 112 68 112H132Q148 112 148 128V160a12 12 0 0 1-24 0a12 12 0 0 1-24 0a12 12 0 0 1-24 0a12 12 0 0 1-24 0Z" fill="#FF6F88"/>
+        <path d="M76 134V160M100 134V160M124 134V160" fill="none" stroke="#E4506F" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M58 126Q58 118 68 118H104" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+        <rect x="62" y="100" width="76" height="24" rx="12" fill="#1FA493"/>
+        <rect x="62" y="96" width="76" height="24" rx="12" fill="#2CC7B2"/>
+        <rect x="68" y="100" width="64" height="5" rx="2.5" fill="#fff" opacity=".4"/>
+      </g>
+      <path d="M160 30Q163 45 178 48Q163 51 160 66Q157 51 142 48Q157 45 160 30Z" fill="#FFF6D8"/>
+      <path d="M38 62Q40 71 49 73Q40 75 38 84Q36 75 27 73Q36 71 38 62Z" fill="#FFF6D8" opacity=".85"/>
+    </symbol>
+
+    <!-- Clean: the suds bucket -->
+    <symbol id="o-bucket" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="182" rx="62" ry="9" fill="url(#g-ground)"/>
+      <path d="M40 82Q100 -18 160 82" fill="none" stroke="#E8813A" stroke-width="9" stroke-linecap="round"/>
+      <path d="M40 82Q100 -18 160 82" fill="none" stroke="url(#g-handle)" stroke-width="6" stroke-linecap="round"/>
+      <path d="M38 80H162L149 162Q146 180 128 180H72Q54 180 51 162Z" fill="url(#g-emerald)"/>
+      <path d="M130 84H162L149 162Q146 180 128 180H112Q128 176 131 158Z" fill="#075A54" opacity=".28"/>
+      <path d="M56 100Q62 98 68 100L73 160Q74 168 70 170Q62 170 61 160Z" fill="url(#g-gloss)"/>
+      <path d="M42 100Q100 116 158 100L157 108Q100 124 43 108Z" fill="#fff" opacity=".22"/>
+      <ellipse cx="100" cy="80" rx="64" ry="18" fill="url(#g-emerald-rim)"/>
+      <ellipse cx="100" cy="81" rx="54" ry="12.5" fill="#0A5E57"/>
+      <ellipse cx="100" cy="84" rx="50" ry="9.5" fill="#BDF3FF"/>
+      <circle cx="76" cy="70" r="15" fill="url(#g-bubble)"/><circle cx="103" cy="60" r="20" fill="url(#g-bubble)"/><circle cx="128" cy="72" r="13" fill="url(#g-bubble)"/>
+      <circle cx="146" cy="42" r="7" fill="url(#g-bubble)"/><circle cx="62" cy="38" r="5.5" fill="url(#g-bubble)"/><circle cx="120" cy="26" r="4" fill="url(#g-bubble)"/>
+      <path d="M92 50a12 12 0 0 1 14-4" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".9"/>
+    </symbol>
+
+    <!-- Space: stacked platters -->
+    <symbol id="o-stack" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="180" rx="72" ry="10" fill="url(#g-ground)"/>
+      <path d="M34 132v22a66 24 0 0 0 132 0v-22z" fill="url(#g-blue-side)"/><ellipse cx="100" cy="132" rx="66" ry="24" fill="url(#g-blue)"/>
+      <ellipse cx="100" cy="132" rx="64.5" ry="22.5" fill="none" stroke="url(#g-rim-soft)" stroke-width="2.5"/>
+      <path d="M38 98v20a62 22 0 0 0 124 0v-20z" fill="url(#g-peach-side)"/><ellipse cx="100" cy="98" rx="62" ry="22" fill="url(#g-peach)"/>
+      <ellipse cx="100" cy="98" rx="60.5" ry="20.5" fill="none" stroke="url(#g-rim-soft)" stroke-width="2.5"/>
+      <path d="M42 62v22a58 20 0 0 0 116 0v-22z" fill="url(#g-cream-side)"/><ellipse cx="100" cy="62" rx="58" ry="20" fill="url(#g-drive)"/>
+      <path d="M100 62H158A58 20 0 0 1 124 80.2Z" fill="url(#g-pink)"/>
+      <path d="M100 62L124 80.2A58 20 0 0 1 72 79.5Z" fill="url(#g-mintcube)"/>
+      <ellipse cx="100" cy="62" rx="56.5" ry="18.5" fill="none" stroke="url(#g-rim)" stroke-width="2.5"/>
+      <ellipse cx="100" cy="62" rx="10" ry="3.6" fill="#fff"/><ellipse cx="100" cy="62.6" rx="6" ry="2" fill="#E9A07E"/>
+    </symbol>
+
+    <!-- Apps: tiles -->
+    <symbol id="o-apps" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="182" rx="70" ry="9" fill="url(#g-ground)"/>
+      <g transform="rotate(-12 66 122)"><rect x="24" y="88" width="84" height="84" rx="25" fill="#3A1A96"/><rect x="24" y="80" width="84" height="84" rx="25" fill="url(#g-violet)"/><rect x="25.5" y="81.5" width="81" height="81" rx="23.5" fill="none" stroke="url(#g-rim-soft)" stroke-width="2.5"/><circle cx="66" cy="122" r="16" fill="#fff" opacity=".9"/><circle cx="66" cy="122" r="7" fill="#7B4DF0"/></g>
+      <g transform="rotate(10 136 130)"><rect x="96" y="98" width="80" height="80" rx="24" fill="#9C1F62"/><rect x="96" y="90" width="80" height="80" rx="24" fill="url(#g-pink)"/><rect x="97.5" y="91.5" width="77" height="77" rx="22.5" fill="none" stroke="url(#g-rim-soft)" stroke-width="2.5"/><path d="M122 132l10 10 18-22" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/></g>
+      <g transform="rotate(4 104 62)"><rect x="62" y="30" width="84" height="84" rx="25" fill="url(#g-drive-side)"/><rect x="62" y="20" width="84" height="84" rx="25" fill="url(#g-drive)"/><rect x="63.5" y="21.5" width="81" height="81" rx="23.5" fill="none" stroke="url(#g-rim)" stroke-width="2.5"/><rect x="82" y="42" width="44" height="10" rx="5" fill="#F08A6A"/><rect x="82" y="58" width="30" height="10" rx="5" fill="#F7B79A"/><rect x="82" y="74" width="38" height="10" rx="5" fill="#F7B79A"/></g>
+    </symbol>
+
+    <!-- Privacy: shield -->
+    <symbol id="o-shield" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="188" rx="52" ry="8" fill="url(#g-ground)"/>
+      <path d="M100 30C124 47 150 53 172 53C172 118 151 163 100 189C49 163 28 118 28 53C50 53 76 47 100 30Z" fill="url(#g-rose-side)"/>
+      <path d="M100 20C124 37 150 43 172 43C172 110 151 155 100 181C49 155 28 110 28 43C50 43 76 37 100 20Z" fill="url(#g-rose)"/>
+      <g clip-path="url(#c-shield)"><path d="M100 20V181C151 155 172 110 172 43C150 43 124 37 100 20Z" fill="#8E1257" opacity=".22"/><ellipse cx="70" cy="46" rx="60" ry="26" fill="#fff" opacity=".3" transform="rotate(-18 70 46)"/></g>
+      <path d="M100 22.5C124 39 150 45 170 45C169.6 108 149.6 152.6 100 178.6C50.4 152.6 30.4 108 30 45C50 45 76 39 100 22.5Z" fill="none" stroke="url(#g-rim)" stroke-width="3"/>
+      <path d="M100 48C117 59 135 64 150 64.5C149.5 108 135 139 100 158C65 139 50.500 108 50 64.5C65 64 83 59 100 48Z" fill="#fff" opacity=".2"/>
+      <circle cx="100" cy="92" r="16" fill="#FFF3EA"/><path d="M92 100H108L113 132H87Z" fill="#FFF3EA"/>
+      <circle cx="100" cy="92" r="8" fill="#B01E63"/>
+    </symbol>
+
+    <!-- Startup: rocket -->
+    <symbol id="o-rocket" viewBox="0 0 200 200">
+      <ellipse cx="78" cy="184" rx="50" ry="8" fill="url(#g-ground)"/>
+      <g transform="rotate(32 100 100)">
+        <path d="M84 148Q100 214 116 148Z" fill="url(#g-flame)"/><path d="M92 148Q100 186 108 148Z" fill="#FFFBE0"/>
+        <path d="M70 104Q38 122 40 160Q56 140 74 138Z" fill="url(#g-orange)"/><path d="M130 104Q162 122 160 160Q144 140 126 138Z" fill="#C73A22"/>
+        <rect x="82" y="134" width="36" height="16" rx="6" fill="#7A2850"/>
+        <path d="M100 12C130 40 138 88 132 138H68C62 88 70 40 100 12Z" fill="url(#g-drive)"/>
+        <path d="M100 12C130 40 138 88 132 138H110C118 90 114 44 100 12Z" fill="#E4688A" opacity=".3"/>
+        <path d="M100 12C113 24 122 40 127 58H73C78 40 87 24 100 12Z" fill="url(#g-coral)"/>
+        <path d="M100 16C92 30 84 60 82 132" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+        <circle cx="100" cy="90" r="20" fill="#FFF6E8"/><circle cx="100" cy="90" r="14.5" fill="url(#g-teal)"/><path d="M91 86a10 10 0 0 1 12-6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+        
+      </g>
+    </symbol>
+
+    <!-- Undo and records: the keep box -->
+    <symbol id="o-box" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="182" rx="72" ry="9" fill="url(#g-ground)"/>
+      <rect x="30" y="56" width="140" height="44" rx="14" fill="url(#g-box-in)"/>
+      <rect x="22" y="72" width="156" height="106" rx="26" fill="url(#g-box)"/><rect x="22" y="72" width="156" height="106" rx="26" fill="url(#g-box-shade)"/>
+      <rect x="23.5" y="73.500" width="153" height="103" rx="24.500" fill="none" stroke="url(#g-rim-soft)" stroke-width="2.5"/>
+      <rect x="70" y="106" width="60" height="44" rx="14" fill="#FFF6E3"/>
+      <path d="M90 128a10 10 0 1 0 3.300-7.400" fill="none" stroke="#C2417A" stroke-width="4.500" stroke-linecap="round"/><path d="M89 113v8.500h8.500" fill="none" stroke="#C2417A" stroke-width="4.500" stroke-linecap="round" stroke-linejoin="round"/>
+      <g transform="rotate(-8 184 82)"><rect x="12" y="46" width="176" height="38" rx="17" fill="#D9772B"/><rect x="12" y="40" width="176" height="38" rx="17" fill="url(#g-lid)"/><rect x="13.5" y="41.500" width="173" height="35" rx="15.500" fill="none" stroke="url(#g-rim)" stroke-width="2.5"/></g>
+    </symbol>
+
+    <!-- Settings: the switch -->
+    <symbol id="o-dial" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="170" rx="74" ry="9" fill="url(#g-ground)"/>
+      <rect x="20" y="70" width="160" height="84" rx="42" fill="url(#g-slate-side)"/>
+      <rect x="20" y="58" width="160" height="84" rx="42" fill="url(#g-slate)"/>
+      <rect x="21.5" y="59.500" width="157" height="81" rx="40.500" fill="none" stroke="url(#g-rim)" stroke-width="3"/>
+      <rect x="34" y="72" width="132" height="56" rx="28" fill="#4A416F" opacity=".5"/>
+      <rect x="34" y="72" width="132" height="56" rx="28" fill="url(#g-mint)" opacity=".85"/>
+      <circle cx="136" cy="106" r="27" fill="#3C2E66" opacity=".35"/>
+      <circle cx="136" cy="100" r="27" fill="url(#g-drive)"/><circle cx="136" cy="100" r="25.500" fill="none" stroke="url(#g-rim)" stroke-width="2.5"/>
+    </symbol>
+
+    <!-- Browsers (result tile) -->
+    <symbol id="o-globe" viewBox="0 0 200 200">
+      <ellipse cx="100" cy="182" rx="56" ry="8" fill="url(#g-ground)"/>
+      <circle cx="100" cy="98" r="72" fill="url(#g-sky)"/>
+      <g fill="none" stroke="#fff" stroke-width="3" opacity=".55"><ellipse cx="100" cy="98" rx="30" ry="72"/><path d="M28 98H172M38 62Q100 78 162 62M38 134Q100 118 162 134"/></g>
+      <circle cx="100" cy="98" r="70.500" fill="none" stroke="url(#g-rim)" stroke-width="3"/>
+      <ellipse cx="76" cy="58" rx="30" ry="14" fill="#fff" opacity=".4" transform="rotate(-28 76 58)"/>
+    </symbol>
+
+    <!-- Sidebar set: each object again in a few bold shapes on a 28 x 28 grid, drawn at 28 px so it stays crisp at 100% scaling -->
+    <symbol id="s-drive" viewBox="0 0 28 28">
+      <rect x="2" y="5.500" width="24" height="19" rx="6.500" fill="#D8527A"/><rect x="2" y="3.500" width="24" height="19" rx="6.500" fill="url(#g-drive)"/>
+      <rect x="5.500" y="7" width="17" height="8.500" rx="4.250" fill="#2E1140"/>
+      <rect x="10" y="9" width="2.400" height="4.500" rx="1.200" fill="#FFE9B0"/><rect x="15.600" y="9" width="2.400" height="4.500" rx="1.200" fill="#FFE9B0"/>
+      <rect x="8" y="18" width="8" height="2" rx="1" fill="#3FE0B0"/>
+    </symbol>
+    <symbol id="s-mop" viewBox="0 0 28 28"><g transform="rotate(20 14 14)">
+      <rect x="12.400" y="1" width="3.200" height="15" rx="1.600" fill="#FFC255"/>
+      <path d="M6.500 17.500h15V23a2.500 2.500 0 0 1-5 0 2.500 2.500 0 0 1-5 0 2.500 2.500 0 0 1-5 0Z" fill="url(#g-coral)"/>
+      <rect x="7.500" y="13.500" width="13" height="5" rx="2.500" fill="#2CC7B2"/>
+    </g></symbol>
+    <symbol id="s-bucket" viewBox="0 0 28 28">
+      <path d="M7.200 8.500C7.200 1.500 20.800 1.500 20.800 8.500" fill="none" stroke="#FFC255" stroke-width="2.400" stroke-linecap="round"/>
+      <path d="M4.500 10h19l-1.900 12.200A3.400 3.400 0 0 1 18.200 25H9.800a3.400 3.400 0 0 1-3.400-2.800Z" fill="url(#g-emerald)"/>
+      <rect x="3" y="8" width="22" height="4.600" rx="2.300" fill="#C9FFE6"/>
+    </symbol>
+    <symbol id="s-stack" viewBox="0 0 28 28">
+      <rect x="3" y="18.500" width="22" height="6.500" rx="3.250" fill="url(#g-blue)"/><rect x="3" y="10.750" width="22" height="6.500" rx="3.250" fill="url(#g-peach)"/><rect x="3" y="3" width="22" height="6.500" rx="3.250" fill="url(#g-drive)"/>
+    </symbol>
+    <symbol id="s-apps" viewBox="0 0 28 28">
+      <rect x="3" y="3" width="10" height="10" rx="3.200" fill="url(#g-drive)"/><rect x="15" y="3" width="10" height="10" rx="3.200" fill="url(#g-pink)"/>
+      <rect x="3" y="15" width="10" height="10" rx="3.200" fill="url(#g-violet)"/><rect x="15" y="15" width="10" height="10" rx="3.200" fill="#B79AFF"/>
+    </symbol>
+    <symbol id="s-shield" viewBox="0 0 28 28">
+      <path d="M14 2.200 24 5.600v7.600c0 6-3.900 10-10 12.600C7.900 23.200 4 19.200 4 13.200V5.600Z" fill="url(#g-rose)"/>
+      <circle cx="14" cy="11.600" r="3.100" fill="#FFF3EA"/><path d="M12.700 13h2.600l1 5.600h-4.600Z" fill="#FFF3EA"/>
+    </symbol>
+    <symbol id="s-rocket" viewBox="0 0 28 28"><g transform="rotate(35 14 14) translate(14 14.500) scale(1.120) translate(-14 -14.500)">
+      <path d="M11.200 20.500h5.600L14 27Z" fill="#FFC043"/>
+      <path d="M9.200 13 4.600 20.600l5.200-1.400Z" fill="#FF8A3C"/><path d="M18.800 13l4.600 7.600-5.200-1.400Z" fill="#DC4A22"/>
+      <path d="M14 1C19.400 5.400 20.400 13 19 20.500H9C7.600 13 8.600 5.400 14 1Z" fill="url(#g-drive)"/>
+      <path d="M14 1c2.600 2.100 4.200 5 5 8H9c.8-3 2.400-5.900 5-8Z" fill="#FF6F88"/>
+      <circle cx="14" cy="13.400" r="2.700" fill="#2CC7B2"/>
+    </g></symbol>
+    <symbol id="s-box" viewBox="0 0 28 28">
+      <rect x="4" y="10" width="20" height="15" rx="4.200" fill="url(#g-box)"/><rect x="2.500" y="5.500" width="23" height="6.600" rx="3.300" fill="url(#g-lid)"/>
+      <rect x="10" y="15.400" width="8" height="5" rx="2.200" fill="#FFF6E3"/>
+    </symbol>
+    <symbol id="s-dial" viewBox="0 0 28 28">
+      <rect x="2" y="6" width="24" height="16" rx="8" fill="url(#g-slate)"/><rect x="4.500" y="8.500" width="19" height="11" rx="5.500" fill="#35CFA6"/>
+      <circle cx="18" cy="14" r="4.300" fill="#FFF9EF"/>
+    </symbol>
+
+    <!-- Line icons for the statements on the front screens (24 grid, one stroke weight) -->
+    <symbol id="i-info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.500"/><path d="M12 11.200v5.300"/></g><circle cx="12" cy="7.900" r="1.150" fill="currentColor"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.500" width="18" height="4.200" rx="1.300"/><path d="M4.500 8.700V18a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8.700M10 12.700h4"/></g></symbol>
+    <symbol id="i-sort" viewBox="0 0 24 24"><path d="M4.500 7h15M4.500 12h10M4.500 17h5.500" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.500h7l4.500 4.500V19a1.500 1.500 0 0 1-1.500 1.500H7A1.500 1.500 0 0 1 5.500 19V5A1.500 1.500 0 0 1 7 3.500Z"/><path d="M14 3.500V8h4.500"/></g></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><rect x="8.500" y="8.500" width="11.500" height="11.500" rx="2.300"/><path d="M5 15V6.200A2.200 2.200 0 0 1 7.200 4H15"/></g></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.500 7h15M9.500 7V4.500h5V7M6.500 7l.9 11.700a1.800 1.800 0 0 0 1.800 1.700h5.600a1.800 1.800 0 0 0 1.800-1.700L17.500 7M10.200 11v5.500M13.800 11v5.500" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round"><circle cx="11" cy="11" r="6.200"/><path d="M15.700 15.700 20 20"/></g></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M10 7h9.500M10 12h9.500M10 17h9.500" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round"/><g fill="currentColor"><circle cx="5.300" cy="7" r="1.300"/><circle cx="5.300" cy="12" r="1.300"/><circle cx="5.300" cy="17" r="1.300"/></g></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.500" width="14" height="9.500" rx="2.300"/><path d="M8.300 10.500V8a3.700 3.700 0 0 1 7.400 0v2.500"/></g></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round"><circle cx="12" cy="8.300" r="3.600"/><path d="M5 19.800c.6-3.600 3.300-5.600 7-5.600s6.400 2 7 5.600"/></g></symbol>
+    <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 3.500v8M7.300 6.900a7.200 7.200 0 1 0 9.400 0" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.500V4.500M6 5h11.500l-2.200 3.800 2.200 3.800H6" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.500"/><path d="M12 7.300V12l3.100 2"/></g></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6.500 3.500h11v17l-2.750-1.700-2.750 1.700-2.750-1.700-2.750 1.700ZM9.500 8.500h5M9.500 12.500h5" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.500" width="16" height="14.500" rx="2.500"/><path d="M4 10.200h16M8.500 3.500v3.600M15.500 3.500v3.600"/></g></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.500 7.500a2 2 0 0 1 2-2h3.600l2 2.200h7.400a2 2 0 0 1 2 2v7.800a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linejoin="round"/></symbol>
+
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5.500 12.500l4.300 4.300L18.500 8" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.500l7 2.800v5.200c0 4.300-2.900 7.400-7 9-4.100-1.600-7-4.700-7-9V6.300z" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linejoin="round"/><path d="M9 12l2.200 2.200L15.200 10" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.800 12s3.400-6 9.200-6 9.200 6 9.200 6-3.400 6-9.200 6-9.200-6-9.200-6z" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.800" fill="none" stroke="currentColor" stroke-width="1.900"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M8 5L4 9l4 4" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.500 9H14a5.500 5.500 0 0 1 0 11H8" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linecap="round"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M14.500 5.500L8 12l6.500 6.500" fill="none" stroke="currentColor" stroke-width="2.100" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.200" fill="currentColor"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4.200l8.600 15H3.400z" fill="none" stroke="currentColor" stroke-width="1.900" stroke-linejoin="round"/><path d="M12 10v4.200" fill="none" stroke="currentColor" stroke-width="2.100" stroke-linecap="round"/><circle cx="12" cy="16.700" r="1.150" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<div class="dragbar" aria-hidden="true"></div>
+<div class="app" data-page="overview" data-s="idle">
+  <canvas class="grain" aria-hidden="true"></canvas>
+  <aside class="sidebar">
+    <div class="brand"><svg class="logo" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-drive"/></svg><span>Bytemop</span></div>
+    <nav id="nav" data-i18n-aria="nav.main">
+      <button class="nav-item on" data-page="overview" data-i18n-title="nav.overview" data-i18n-aria="nav.overview">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-mop"/></svg>
+        <span data-i18n="nav.overview"></span>
+      </button>
+      <div class="nav-group" data-i18n="nav.gSpace"></div>
+      <button class="nav-item" data-page="clean" data-i18n-title="nav.clean" data-i18n-aria="nav.clean">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-bucket"/></svg>
+        <span data-i18n="nav.clean"></span>
+      </button>
+      <button class="nav-item" data-page="disk" data-i18n-title="nav.disk" data-i18n-aria="nav.disk">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-stack"/></svg>
+        <span data-i18n="nav.disk"></span>
+      </button>
+      <button class="nav-item" data-page="apps" data-i18n-title="nav.apps" data-i18n-aria="nav.apps">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-apps"/></svg>
+        <span data-i18n="nav.apps"></span>
+      </button>
+      <div class="nav-group" data-i18n="nav.gPrivacy"></div>
+      <button class="nav-item" data-page="privacy" data-i18n-title="nav.privacy" data-i18n-aria="nav.privacy">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-shield"/></svg>
+        <span data-i18n="nav.privacy"></span>
+      </button>
+      <button class="nav-item" data-page="startup" data-i18n-title="nav.startup" data-i18n-aria="nav.startup">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-rocket"/></svg>
+        <span data-i18n="nav.startup"></span>
+      </button>
+      <div class="nav-group" data-i18n="nav.gRecords"></div>
+      <button class="nav-item" data-page="history" data-i18n-title="nav.history" data-i18n-aria="nav.history">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-box"/></svg>
+        <span data-i18n="nav.history"></span>
+      </button>
+      <div class="spacer"></div>
+      <button class="nav-item" data-page="settings" data-i18n-title="nav.settings" data-i18n-aria="nav.settings">
+        <svg class="ni" viewBox="0 0 28 28" aria-hidden="true"><use href="#s-dial"/></svg>
+        <span data-i18n="nav.settings"></span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <div id="app-error" class="callout bad" role="alert" hidden></div>
+    <!-- Home: smart scan, one state machine (idle, scanning, result, cleaning, done, after) -->
+    <section id="page-overview" class="page home" data-s="idle">
+      <div class="pane p-stage">
+        <div class="slot" data-slot="stage"></div>
+        <div class="copy">
+          <h1 id="home-title"></h1>
+          <p id="home-line" class="lead"></p>
+          <ul id="home-bullets" class="bullets"></ul>
+          <div id="home-live" class="live" role="status" aria-live="polite"></div>
+          <div id="home-aside" class="aside"></div>
+        </div>
+      </div>
+
+      <div class="pane p-result">
+        <div class="res-top"><span class="res-found"><span id="res-found"></span> <b id="reclaim">—</b></span><button id="home-restart" class="ghost" type="button"></button></div>
+        <div class="res-head">
+          <div class="slot" data-slot="result"></div>
+          <div class="res-copy"><h2 id="res-title"></h2><p id="res-sub"></p></div>
+        </div>
+        <div id="tiles" class="tiles"></div>
+      </div>
+
+      <div class="pane p-done">
+        <div class="slot" data-slot="done"></div>
+        <div class="copy done-copy">
+          <div role="status">
+            <h1 id="done-title"><span id="done-what"></span><b id="done-size"></b></h1>
+            <p id="done-sub" class="lead"></p>
+            <p id="done-line" class="lead"></p>
+            <div id="done-notes" class="done-notes"></div>
+          </div>
+          <div class="done-acts">
+            <button id="done-undo" class="pill glass" type="button"></button>
+            <button id="done-log" class="pill glass" type="button"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero" id="hero" aria-hidden="true">
+        <div class="hero-par">
+          <div class="hero-glow"></div>
+          <div class="ly ly-shadow"><svg viewBox="0 0 520 440">
+            <ellipse cx="262" cy="392" rx="250" ry="38" fill="url(#g-pool)"/><ellipse cx="262" cy="382" rx="232" ry="36" fill="url(#g-ground)"/>
+            <ellipse class="sh-core" cx="260" cy="364" rx="176" ry="22" fill="url(#g-ground)"/>
+          </svg></div>
+          <div class="orbit orbit-back"><div class="orbit-spin"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="ly ly-drive"><div class="breathe">
+            <svg viewBox="0 0 520 440">
+              <rect x="112" y="128" width="296" height="222" rx="66" fill="url(#g-drive-side)"/>
+              
+              <rect x="112" y="108" width="296" height="222" rx="66" fill="url(#g-drive)"/>
+              <rect x="112" y="108" width="296" height="222" rx="66" fill="url(#g-drive-shade)"/>
+              <ellipse cx="218" cy="142" rx="88" ry="24" fill="url(#g-spec)" transform="rotate(-5 218 142)"/>
+              <rect x="113.500" y="109.500" width="293" height="219" rx="64.500" fill="none" stroke="url(#g-rim)" stroke-width="3"/>
+              <rect x="148" y="142" width="224" height="100" rx="50" fill="#D2684E" opacity=".3"/>
+              <rect x="152" y="146" width="216" height="92" rx="46" fill="url(#g-visor)"/>
+              <rect x="153" y="147" width="214" height="90" rx="45" fill="none" stroke="url(#g-visor-rim)" stroke-width="2"/>
+              <path d="M184 158Q260 148 336 158Q350 161 346 170Q260 160 176 172Q170 162 184 158Z" fill="#fff" opacity=".09"/>
+              <rect x="176" y="268" width="140" height="16" rx="8" fill="#B8553F" opacity=".3"/>
+              <rect x="177" y="269" width="138" height="5" rx="2.500" fill="#8C3A2E" opacity=".25"/>
+              <circle cx="340" cy="276" r="11" fill="#B8553F" opacity=".22"/>
+            </svg>
+            <svg class="face" viewBox="0 0 520 440">
+              <g clip-path="url(#c-visor)"><g transform="skewX(-22)"><rect class="sheen" x="140" y="130" width="46" height="130" fill="#fff"/></g></g>
+              <g class="look"><g class="eyes">
+                <ellipse cx="224" cy="192" rx="27" ry="30" fill="url(#g-eyeglow)"/><ellipse cx="296" cy="192" rx="27" ry="30" fill="url(#g-eyeglow)"/>
+                <g class="eye-open"><rect x="215" y="175" width="18" height="34" rx="9" fill="url(#g-eye)"/><rect x="287" y="175" width="18" height="34" rx="9" fill="url(#g-eye)"/></g>
+                <g class="eye-happy" fill="none" stroke="#FFE9B0" stroke-width="8" stroke-linecap="round"><path d="M210 199Q224 180 238 199"/><path d="M282 199Q296 180 310 199"/></g>
+              </g></g>
+              <g clip-path="url(#c-belt)"><rect class="belt-fill" x="176" y="268" width="140" height="16" fill="url(#g-mint)"/><rect x="176" y="269" width="140" height="4" fill="#fff" opacity=".4" class="belt-gloss"/></g>
+              <circle class="led-glow" cx="340" cy="276" r="15" fill="#5BEFC0" opacity=".35"/>
+              <circle class="led" cx="340" cy="276" r="7" fill="url(#g-led)"/>
+            </svg>
+          </div></div>
+          <div class="ly ly-box"><svg viewBox="0 0 520 440">
+            <!-- the keep box stands to the left of the drive, clear of it. Open: the lid is swung up on its back edge and
+                 stands behind the opening (.lid-up); closed: it lies on top (.lid). -->
+            <g transform="translate(-25 280) scale(.82)">
+              <ellipse cx="76" cy="132" rx="96" ry="20" fill="url(#g-ground)"/>
+              <g class="box-pop">
+                <g class="lid-up">
+                  <path d="M12 44L17 2Q18.500 -10 31 -10H119Q131.500 -10 133 2L138 44Z" fill="url(#g-lid)"/>
+                  <path d="M12 44L17 2Q18.500 -10 31 -10H119Q131.500 -10 133 2L138 44Z" fill="#B4531F" opacity=".34"/>
+                  <path d="M24 44L27.500 8Q28.300 1 36 1H114Q121.700 1 122.500 8L126 44Z" fill="#8A3520" opacity=".22"/>
+                  <path d="M18 1Q19.500 -8.500 31 -8.500H119Q130.500 -8.500 132 1" fill="none" stroke="#FFF3CC" stroke-width="2.500" stroke-linecap="round" opacity=".9"/>
+                </g>
+                <rect x="16" y="34" width="118" height="40" rx="13" fill="url(#g-box-in)"/>
+                <rect x="10" y="46" width="130" height="88" rx="23" fill="url(#g-box)"/><rect x="10" y="46" width="130" height="88" rx="23" fill="url(#g-box-shade)"/>
+                <rect x="11.500" y="47.500" width="127" height="85" rx="21.500" fill="none" stroke="url(#g-rim-soft)" stroke-width="2.500"/>
+                <rect x="14" y="54" width="122" height="8" rx="4" fill="#8A3520" opacity=".3"/>
+                <rect x="19" y="72" width="112" height="44" rx="14" fill="#FFF6E3"/>
+                <g id="box-glyph" transform="translate(30 83)" fill="none" stroke="#B5306A" stroke-width="3.400" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2L2 7l5 5"/><path d="M2.500 7H13a6 6 0 0 1 0 12H8"/></g>
+                <text id="box-days" x="62" y="103" font-size="26" font-weight="700" fill="#8E1F54">7</text>
+                <g class="lid"><rect x="2" y="26" width="146" height="32" rx="15" fill="url(#g-lid)"/><rect x="3.500" y="27.500" width="143" height="29" rx="13.500" fill="none" stroke="url(#g-rim)" stroke-width="2.500"/></g>
+              </g>
+            </g>
+          </svg></div>
+          <div class="ly ly-crumbs"><svg viewBox="0 0 520 440">
+            <g class="cr cr0"><g class="cr-y"><g transform="translate(214 352) rotate(-12)"><rect x="-11" y="-14" width="22" height="28" rx="5" fill="url(#g-paper)"/><path d="M3 -14L11 -6H5a2 2 0 0 1-2-2Z" fill="#F3B9A2"/><rect x="-6" y="-2" width="12" height="2.600" rx="1.300" fill="#F0B39C"/><rect x="-6" y="4" width="8" height="2.600" rx="1.300" fill="#F0B39C"/></g></g></g>
+            <g class="cr cr1"><g class="cr-y"><g transform="translate(252 364) rotate(14)"><rect x="-12" y="-12" width="24" height="24" rx="7" fill="url(#g-lilac)"/><rect x="-8" y="-9" width="16" height="4" rx="2" fill="#fff" opacity=".6"/></g></g></g>
+            <g class="cr cr2"><g class="cr-y"><g transform="translate(290 356)"><circle r="12" fill="url(#g-sun)"/><circle r="5" fill="none" stroke="#fff" stroke-width="2.400" opacity=".75"/></g></g></g>
+            <g class="cr cr3"><g class="cr-y"><g transform="translate(232 381) rotate(8)"><path d="M0 -10L11 8H-11Z" fill="#FF8FA8" stroke="#FF8FA8" stroke-width="6" stroke-linejoin="round"/></g></g></g>
+            <g class="cr cr4"><g class="cr-y"><g transform="translate(312 376) rotate(22)"><rect x="-9" y="-12" width="18" height="24" rx="4.500" fill="#DFFFF1"/><rect x="-5" y="-4" width="10" height="2.400" rx="1.200" fill="#7FDDBB"/><rect x="-5" y="1" width="7" height="2.400" rx="1.200" fill="#7FDDBB"/></g></g></g>
+            <g class="cr cr5"><g class="cr-y"><g transform="translate(272 384) rotate(-18)"><rect x="-9" y="-9" width="18" height="18" rx="5.500" fill="url(#g-mintcube)"/></g></g></g>
+            <g class="cr cr6"><g class="cr-y"><g transform="translate(196 376)"><circle r="7.500" fill="url(#g-coral)"/></g></g></g>
+            <g class="cr cr7"><g class="cr-y"><g transform="translate(330 352)"><circle r="6.500" fill="url(#g-lilac)"/></g></g></g>
+          </svg></div>
+          <div class="ly ly-mop"><svg viewBox="0 0 520 440">
+            <ellipse cx="366" cy="388" rx="72" ry="18" fill="url(#g-ground)" opacity=".9"/>
+            <g transform="translate(436 40) rotate(12)">
+              <rect x="-7.500" y="0" width="15" height="252" rx="7.500" fill="url(#g-handle)"/>
+              <rect x="-4.200" y="10" width="3.200" height="226" rx="1.600" fill="#fff" opacity=".55"/>
+              <rect x="-10" y="-8" width="20" height="26" rx="10" fill="url(#g-coral)"/><rect x="-6.500" y="-5" width="4" height="12" rx="2" fill="#fff" opacity=".5"/>
+              <g fill="url(#g-coral-d)"><rect x="-14" y="0" width="28" height="52" rx="14" transform="translate(-34 262) rotate(36)"/><rect x="-14" y="0" width="28" height="52" rx="14" transform="translate(34 262) rotate(-36)"/><rect x="-14" y="0" width="28" height="70" rx="14" transform="translate(-12 262) rotate(11)"/><rect x="-14" y="0" width="28" height="70" rx="14" transform="translate(13 262) rotate(-12)"/></g>
+              <g fill="url(#g-coral)"><rect x="-14" y="0" width="28" height="62" rx="14" transform="translate(-24 262) rotate(23)"/><rect x="-14" y="0" width="28" height="62" rx="14" transform="translate(24 262) rotate(-23)"/><rect x="-14.500" y="0" width="29" height="78" rx="14.500" transform="translate(0 262)"/></g>
+              <g fill="#fff" opacity=".4"><rect x="-8" y="12" width="5" height="26" rx="2.500" transform="translate(-24 262) rotate(23)"/><rect x="-8" y="12" width="5" height="26" rx="2.500" transform="translate(24 262) rotate(-23)"/><rect x="-8.500" y="14" width="5" height="34" rx="2.500" transform="translate(0 262)"/></g>
+              <rect x="-25" y="240" width="50" height="32" rx="13" fill="url(#g-teal)"/>
+              <rect x="-20" y="243.500" width="40" height="5" rx="2.500" fill="#fff" opacity=".55"/>
+              <rect x="-25" y="262" width="50" height="10" rx="5" fill="#0A6A70" opacity=".25"/>
+            </g>
+          </svg></div>
+          <div class="orbit orbit-front"><div class="orbit-spin"><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="ly ly-spark"><svg viewBox="0 0 520 440">
+            <g class="sp sp0"><path transform="translate(92 104) scale(1.900)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+            <g class="sp sp1"><path transform="translate(304 58) scale(1.200)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+            <g class="sp sp2"><path transform="translate(60 214) scale(.900)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+            <g class="sp sp3"><path transform="translate(462 268) scale(1.400)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+            <g class="sp sp4"><path transform="translate(168 62) scale(.800)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+            <g class="sp sp5"><path transform="translate(352 34) scale(2)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFFDF2"/></g>
+            <g class="sp sp6"><path transform="translate(492 188) scale(.700)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFFDF2"/></g>
+            <g class="sp sp7"><path transform="translate(214 28) scale(1.300)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+            <g class="sp sp8"><path transform="translate(24 152) scale(1.300)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFFDF2"/></g>
+            <g class="sp sp9"><path transform="translate(500 118) scale(.750)" d="M0 -10C1.500 -3 3 -1.500 10 0C3 1.500 1.500 3 0 10C-1.500 3 -3 1.500 -10 0C-3 -1.500 -1.500 -3 0 -10Z" fill="#FFF6D8"/></g>
+          </svg></div>
+        </div>
+      </div>
+
+      <div class="cta">
+        <button id="smart-scan" class="round" type="button"><span></span></button>
+        <button id="home-stop" class="round quiet" type="button" hidden><span></span></button>
+        <button id="home-run" class="round" type="button" hidden><span></span></button>
+        <button id="done-ok" class="round" type="button" hidden><span></span></button>
+        <!-- while cleaning or putting back: the same spot shows that work is going on. The backend reports no progress
+             for these, so the ring only turns; it never shows a made-up percentage. -->
+        <div id="home-busy" class="busy" role="progressbar" hidden><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="busy-track" cx="50" cy="50" r="46"/><circle class="busy-arc" cx="50" cy="50" r="46"/></svg><span id="home-busy-label"></span></div>
+      </div>
+
+      <div id="review" class="review" role="dialog" aria-modal="true" aria-labelledby="rv-title" hidden>
+        <div class="rv-sheet">
+          <header class="rv-head"><button id="rv-back" class="rv-back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"/></svg><span></span></button><h2 id="rv-title"></h2><span class="rv-pad"></span></header>
+          <div class="rv-body"><div id="rv-groups" class="rv-groups" role="tablist"></div><div id="rv-list" class="rv-list"></div></div>
+          <footer class="rv-foot"><span id="rv-sum" role="status"></span><button id="rv-done" class="pill solid" type="button"></button></footer>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clean -->
+    <section id="page-clean" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-bucket"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="cl.title"></h1>
+            <div id="clean-summary" class="wk-sum"></div>
+          </div>
+          <div class="wk-acts">
+            <div id="filters" class="chips" role="group" hidden></div>
+            <button id="rescan" class="pill glass" type="button" data-i18n="cl.scan"></button>
+          </div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-scroll">
+            <div id="result" class="card result" role="status" hidden></div>
+            <div id="clean-body"></div>
+          </div>
+          <div id="actionbar" class="actionbar" hidden>
+            <span id="selected-summary"></span>
+            <button id="clean-btn" class="btn primary large" disabled></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Startup -->
+    <section id="page-startup" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-rocket"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="su.title"></h1>
+            <div id="startup-summary" class="wk-sum"></div>
+          </div>
+          <div class="wk-acts">
+            <div id="startup-filters" class="chips" role="group"></div>
+            <button id="startup-refresh" class="pill glass" type="button" data-i18n="su.refresh"></button>
+          </div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-scroll">
+            <div class="callout" data-i18n="su.hint"></div>
+            <div id="startup-msg" class="status" role="status"></div>
+            <div id="startup-body"></div>
+            <p class="footnote" data-i18n="su.impactNote"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apps: uninstall + leftovers -->
+    <section id="page-apps" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-apps"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="ap.title"></h1>
+            <div id="ap-summary" class="wk-sum"></div>
+          </div>
+          <div class="wk-acts">
+            <div id="ap-filters" class="chips" role="group"></div>
+            <button id="ap-refresh" class="pill glass" type="button" data-i18n="ap.refresh"></button>
+          </div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-bar ap-controls">
+            <input id="ap-search" type="search" spellcheck="false" autocomplete="off" data-i18n-placeholder="ap.search" data-i18n-aria="ap.search" />
+            <select id="ap-sort" data-i18n-aria="ap.sort">
+              <option value="name" data-i18n="ap.sortName"></option>
+              <option value="size" data-i18n="ap.sortSize"></option>
+              <option value="date" data-i18n="ap.sortDate"></option>
+            </select>
+          </div>
+          <div class="wk-scroll">
+            <div id="ap-warn" class="callout warn" role="status" hidden></div>
+            <div id="ap-msg" class="status ap-msg" role="status"></div>
+            <div id="ap-pending"></div>
+            <div id="ap-body"></div>
+            <div class="callout" data-i18n="ap.hint"></div>
+            <p class="footnote" data-i18n="ap.note"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Disk analyzer -->
+    <section id="page-disk" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-stack"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="dk.title"></h1>
+            <div id="dk-summary" class="wk-sum"></div>
+          </div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-bar dk-controls">
+            <label class="lbl" for="dk-root" data-i18n="e3.dk.where"></label>
+            <select id="dk-root" data-i18n-aria="dk.where"></select>
+            <button id="dk-pick" class="btn" type="button" data-i18n="dk.pick"></button>
+            <button id="dk-go" class="btn primary" type="button" data-i18n="dk.analyze"></button>
+          </div>
+          <div class="wk-scroll">
+            <div id="dk-progress" class="status" role="status"></div>
+            <div id="dk-result" class="card result" role="status" hidden></div>
+            <div id="dk-tabs" class="chips dk-tabs" role="group" hidden></div>
+            <div id="dk-body"></div>
+          </div>
+          <div id="dk-actionbar" class="actionbar" hidden>
+            <span id="dk-selected"></span>
+            <button id="dk-trash" class="btn primary large" disabled></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section id="page-privacy" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-shield"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="pv.title"></h1>
+            <div id="pv-summary" class="wk-sum"></div>
+          </div>
+          <div class="wk-acts"><button id="pv-rescan" class="pill glass" type="button" data-i18n="pv.rescan"></button></div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-scroll">
+            <div class="callout warn" data-i18n="pv.warn"></div>
+            <div id="pv-result" class="card result" role="status" hidden></div>
+            <div id="pv-body"></div>
+            <h2 data-i18n="pv.keepTitle"></h2>
+            <div class="card">
+              <div class="hint" data-i18n="pv.keepHint"></div>
+              <div class="ex-add">
+                <input id="pv-keep-input" type="text" spellcheck="false" autocomplete="off" data-i18n-placeholder="pv.keepPlaceholder" data-i18n-aria="pv.keepTitle" />
+                <button id="pv-keep-add" class="btn primary" type="button" data-i18n="pv.keepAdd"></button>
+                <button id="pv-pick" class="btn" type="button" data-i18n="pv.pick"></button>
+              </div>
+              <div id="pv-keep-msg" class="small muted" role="status"></div>
+              <div id="pv-keep-list" class="site-chips"></div>
+              <div id="pv-sites" class="pv-sites" hidden></div>
+            </div>
+          </div>
+          <div id="pv-actionbar" class="actionbar" hidden>
+            <span id="pv-selected"></span>
+            <button id="pv-clean" class="btn danger large" disabled></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section id="page-history" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-box"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="hi.title"></h1>
+            <div id="quarantine-summary" class="wk-sum"></div>
+          </div>
+          <div class="wk-acts"><button id="history-export" class="pill glass" type="button" data-i18n="hi.export"></button><button id="purge-all" class="pill glass" type="button" data-i18n="hi.emptyAll"></button></div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-scroll">
+            <div id="history-msg" class="status" role="status"></div>
+            <h2 class="first" data-i18n="hi.quarantine"></h2>
+            <div id="runs" class="card list"></div>
+            <h2 data-i18n="hi.activity"></h2>
+            <div id="events" class="card list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section id="page-settings" class="page" hidden>
+      <div class="work">
+        <header class="wk-head">
+          <svg class="wk-obj" viewBox="0 0 200 200" aria-hidden="true"><use href="#o-dial"/></svg>
+          <div class="wk-title">
+            <h1 data-i18n="st.title"></h1>
+            <p id="settings-status" class="wk-sum" role="status"></p>
+          </div>
+        </header>
+        <div class="wk-sheet">
+          <div class="wk-scroll narrow">
+      <h2 class="first" data-i18n="st.cleaning"></h2>
+      <div class="card list">
+        <div class="setting">
+          <div><div class="strong" data-i18n="st.mode"></div><div class="muted small" data-i18n="st.modeHint"></div></div>
+          <select id="set-mode" data-i18n-aria="st.mode">
+            <option value="quarantine" data-i18n="st.modeQuarantine"></option>
+            <option value="permanent" data-i18n="st.modePermanent"></option>
+          </select>
+        </div>
+        <div class="setting">
+          <div class="strong" data-i18n="st.keep"></div>
+          <label class="inline"><input id="set-days" type="number" min="1" max="90" data-i18n-aria="st.keep" /> <span data-i18n="st.days"></span></label>
+        </div>
+        <div class="setting">
+          <div class="strong" data-i18n="st.limit"></div>
+          <label class="inline"><input id="set-limit" type="number" min="1" max="100" data-i18n-aria="st.limit" /> GB</label>
+        </div>
+      </div>
+      <h2 data-i18n="st.general"></h2>
+      <div class="card list">
+        <div class="setting">
+          <div class="strong" data-i18n="st.theme"></div>
+          <select id="set-theme" data-i18n-aria="st.theme">
+            <option value="auto" data-i18n="theme.auto"></option>
+            <option value="light" data-i18n="theme.light"></option>
+            <option value="dark" data-i18n="theme.dark"></option>
+          </select>
+        </div>
+        <div class="setting">
+          <div><div class="strong" data-i18n="st.welcome"></div><div class="muted small" data-i18n="st.welcomeHint"></div></div>
+          <button id="set-welcome" class="btn small" data-i18n="st.welcomeOpen"></button>
+        </div>
+        <div class="setting">
+          <div class="strong" data-i18n="st.language"></div>
+          <select id="set-lang" data-i18n-aria="st.language">
+            <option value="auto" data-i18n="st.langAuto"></option>
+            <option value="zh-CN">简体中文</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+      <h2 data-i18n="sc.title"></h2>
+      <div class="card list">
+        <div class="setting">
+          <div><div class="strong" data-i18n="sc.enable"></div><div class="muted small" data-i18n="sc.enableHint"></div></div>
+          <button id="sc-enabled" class="switch" type="button" role="switch" aria-checked="false" data-i18n-aria="sc.enable"></button>
+        </div>
+        <div class="setting sc-opt">
+          <div class="strong" data-i18n="sc.frequency"></div>
+          <select id="sc-frequency" data-i18n-aria="sc.frequency"><option value="daily" data-i18n="sc.daily"></option><option value="weekly" data-i18n="sc.weekly"></option></select>
+        </div>
+        <div class="setting sc-opt" id="sc-weekday-row">
+          <div class="strong" data-i18n="sc.weekday"></div>
+          <select id="sc-weekday" data-i18n-aria="sc.weekday"></select>
+        </div>
+        <div class="setting sc-opt">
+          <div class="strong" data-i18n="sc.time"></div>
+          <input id="sc-time" type="time" data-i18n-aria="sc.time" />
+        </div>
+        <div class="setting sc-opt">
+          <div><div class="strong" data-i18n="sc.mode"></div><div id="sc-mode-hint" class="muted small"></div></div>
+          <select id="sc-mode" data-i18n-aria="sc.mode"><option value="scan" data-i18n="sc.modeScan"></option><option value="clean" data-i18n="sc.modeClean"></option></select>
+        </div>
+        <div class="setting sc-opt">
+          <label class="inline"><input id="sc-ac" type="checkbox" /> <span data-i18n="sc.onlyAC"></span></label>
+        </div>
+        <div class="setting sc-opt">
+          <label class="inline"><input id="sc-lowdisk" type="checkbox" /> <span data-i18n="sc.lowDisk"></span></label>
+          <label class="inline"><span class="muted" data-i18n="sc.lowDiskBelow"></span> <input id="sc-lowgb" type="number" min="1" max="1000" data-i18n-aria="sc.lowDiskBelow" /> <span data-i18n="sc.gb"></span></label>
+        </div>
+        <div class="setting">
+          <div>
+            <div id="sc-status" class="small muted"></div>
+            <div id="sc-msg" class="small" role="status"></div>
+          </div>
+          <div class="acts-row">
+            <button id="sc-recreate" class="btn small" hidden data-i18n="sc.recreate"></button>
+            <button id="sc-test" class="btn small" data-i18n="sc.testNotify"></button>
+          </div>
+        </div>
+      </div>
+      <h2 data-i18n="ex.title"></h2>
+      <div class="card">
+        <div class="muted small" data-i18n="ex.hint"></div>
+        <div class="ex-add">
+          <button id="ex-folder" class="btn small" data-i18n="ex.addFolder"></button>
+          <button id="ex-file" class="btn small" data-i18n="ex.addFile"></button>
+          <input id="ex-input" type="text" spellcheck="false" autocomplete="off" data-i18n-placeholder="ex.placeholder" />
+          <button id="ex-add" class="btn small primary" data-i18n="ex.add"></button>
+        </div>
+        <div id="ex-msg" class="small muted" role="status"></div>
+        <div id="ex-list" class="ex-list"></div>
+      </div>
+      <h2 data-i18n="ab.title"></h2>
+      <div class="card list">
+        <div class="setting"><div class="strong" data-i18n="ab.version"></div><div id="ab-version" class="muted"></div></div>
+        <div class="setting">
+          <div><div class="strong" data-i18n="ab.data"></div><div id="ab-data" class="muted small ab-path"></div></div>
+          <button id="ab-open" class="btn small" data-i18n="ab.open"></button>
+        </div>
+        <div class="setting"><div class="muted small" data-i18n="ab.unsigned"></div></div>
+      </div>
+      <h2 data-i18n="st.privacy"></h2>
+      <div class="card muted" data-i18n="st.privacyBody"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="welcome" class="welcome" role="dialog" aria-modal="true" aria-labelledby="wl-heading" data-step="0" hidden>
+  <div class="wl-art" aria-hidden="true">
+    <svg class="a0" viewBox="0 0 200 200"><use href="#o-drive"/></svg>
+    <svg class="a1" viewBox="0 0 200 200"><use href="#o-box"/></svg>
+    <svg class="a2" viewBox="0 0 200 200"><use href="#o-bucket"/></svg>
+    <i></i><i></i><i></i>
+  </div>
+  <div class="welcome-box">
+    <div id="wl-dots" class="wl-dots" role="img"></div>
+    <div id="wl-main"></div>
+    <div id="wl-msg" class="small bad" role="alert"></div>
+    <div id="wl-foot" class="wl-foot"></div>
+  </div>
+</div>
+
+<aside id="drawer" class="drawer" hidden tabindex="-1" role="dialog" aria-modal="true"></aside>
+<div id="scrim" class="scrim" hidden></div>
+<div id="modal-root"></div>
+
+<script src="i18n.js"></script>
+<script src="e3.js"></script>
+<script src="renderer.js"></script>
+</body>
+</html>

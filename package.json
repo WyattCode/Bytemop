@@ -1,0 +1,75 @@
+{
+  "name": "bytemop",
+  "version": "0.1.0",
+  "description": "Small, transparent Windows cache and temp-file cleaner (Electron)",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/",
+    "dist": "electron-builder --win",
+    "dist:dir": "electron-builder --win --dir",
+    "checksums": "node scripts/checksums.js",
+    "test:clean": "node scripts/clean-test-tmp.js",
+    "test:real": "set BYTEMOP_REAL_TESTS=1&& node --test test/",
+    "selftest": "set BYTEMOP_SELFTEST=1&& electron ."
+  },
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "electron": "45.4.1",
+    "electron-builder": "^26.18.0"
+  },
+  "author": "Bytemop",
+  "build": {
+    "appId": "com.bytemop.app",
+    "productName": "Bytemop",
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "*.js",
+      "renderer/**",
+      "rules/**",
+      "package.json",
+      "!dist/**",
+      "!test/**",
+      "!docs/**",
+      "!scripts/**",
+      "!build/**",
+      "!selftest.js"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "signExecutable": false,
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "artifactName": "Bytemop-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Bytemop-${version}-portable.${ext}"
+    },
+    "electronFuses": {
+      "runAsNode": false,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true
+    },
+    "electronLanguages": [
+      "en-US",
+      "zh-CN"
+    ]
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}
